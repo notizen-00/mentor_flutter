@@ -100,16 +100,6 @@ class _TaskFormDrawerState extends State<TaskFormDrawer> {
       return;
     }
 
-    final taskData = TaskData(
-      mentorId: _selectedMentorId!,
-      permasalahan: permasalahan,
-      solusi: solusi,
-      namaKegiatan: kegiatan,
-      foto: _imageFile,
-    );
-
-    context.read<TaskBloc>().add(Createtask(taskData));
-
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

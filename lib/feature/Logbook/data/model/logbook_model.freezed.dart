@@ -1091,6 +1091,8 @@ mixin _$User {
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
+  String? get picture => throw _privateConstructorUsedError;
+  SiswaModel? get siswa => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1108,7 +1110,11 @@ abstract class $UserCopyWith<$Res> {
       String email,
       @JsonKey(name: 'email_verified_at') String? emailVerifiedAt,
       @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt});
+      @JsonKey(name: 'updated_at') DateTime updatedAt,
+      String? picture,
+      SiswaModel? siswa});
+
+  $SiswaModelCopyWith<$Res>? get siswa;
 }
 
 /// @nodoc
@@ -1130,6 +1136,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? emailVerifiedAt = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? picture = freezed,
+    Object? siswa = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -1156,7 +1164,27 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      picture: freezed == picture
+          ? _value.picture
+          : picture // ignore: cast_nullable_to_non_nullable
+              as String?,
+      siswa: freezed == siswa
+          ? _value.siswa
+          : siswa // ignore: cast_nullable_to_non_nullable
+              as SiswaModel?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $SiswaModelCopyWith<$Res>? get siswa {
+    if (_value.siswa == null) {
+      return null;
+    }
+
+    return $SiswaModelCopyWith<$Res>(_value.siswa!, (value) {
+      return _then(_value.copyWith(siswa: value) as $Val);
+    });
   }
 }
 
@@ -1173,7 +1201,12 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String email,
       @JsonKey(name: 'email_verified_at') String? emailVerifiedAt,
       @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt});
+      @JsonKey(name: 'updated_at') DateTime updatedAt,
+      String? picture,
+      SiswaModel? siswa});
+
+  @override
+  $SiswaModelCopyWith<$Res>? get siswa;
 }
 
 /// @nodoc
@@ -1192,6 +1225,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? emailVerifiedAt = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? picture = freezed,
+    Object? siswa = freezed,
   }) {
     return _then(_$UserImpl(
       id: null == id
@@ -1218,6 +1253,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      picture: freezed == picture
+          ? _value.picture
+          : picture // ignore: cast_nullable_to_non_nullable
+              as String?,
+      siswa: freezed == siswa
+          ? _value.siswa
+          : siswa // ignore: cast_nullable_to_non_nullable
+              as SiswaModel?,
     ));
   }
 }
@@ -1231,7 +1274,9 @@ class _$UserImpl implements _User {
       required this.email,
       @JsonKey(name: 'email_verified_at') this.emailVerifiedAt,
       @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'updated_at') required this.updatedAt});
+      @JsonKey(name: 'updated_at') required this.updatedAt,
+      this.picture,
+      this.siswa});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -1251,10 +1296,14 @@ class _$UserImpl implements _User {
   @override
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
+  @override
+  final String? picture;
+  @override
+  final SiswaModel? siswa;
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email, emailVerifiedAt: $emailVerifiedAt, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'User(id: $id, name: $name, email: $email, emailVerifiedAt: $emailVerifiedAt, createdAt: $createdAt, updatedAt: $updatedAt, picture: $picture, siswa: $siswa)';
   }
 
   @override
@@ -1270,13 +1319,15 @@ class _$UserImpl implements _User {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+                other.updatedAt == updatedAt) &&
+            (identical(other.picture, picture) || other.picture == picture) &&
+            (identical(other.siswa, siswa) || other.siswa == siswa));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, email, emailVerifiedAt, createdAt, updatedAt);
+  int get hashCode => Object.hash(runtimeType, id, name, email, emailVerifiedAt,
+      createdAt, updatedAt, picture, siswa);
 
   @JsonKey(ignore: true)
   @override
@@ -1294,13 +1345,14 @@ class _$UserImpl implements _User {
 
 abstract class _User implements User {
   const factory _User(
-          {required final int id,
-          required final String name,
-          required final String email,
-          @JsonKey(name: 'email_verified_at') final String? emailVerifiedAt,
-          @JsonKey(name: 'created_at') required final DateTime createdAt,
-          @JsonKey(name: 'updated_at') required final DateTime updatedAt}) =
-      _$UserImpl;
+      {required final int id,
+      required final String name,
+      required final String email,
+      @JsonKey(name: 'email_verified_at') final String? emailVerifiedAt,
+      @JsonKey(name: 'created_at') required final DateTime createdAt,
+      @JsonKey(name: 'updated_at') required final DateTime updatedAt,
+      final String? picture,
+      final SiswaModel? siswa}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -1320,7 +1372,410 @@ abstract class _User implements User {
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt;
   @override
+  String? get picture;
+  @override
+  SiswaModel? get siswa;
+  @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+SiswaModel _$SiswaModelFromJson(Map<String, dynamic> json) {
+  return _SiswaModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SiswaModel {
+  int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_id')
+  int get userId => throw _privateConstructorUsedError;
+  int get nisn => throw _privateConstructorUsedError;
+  @JsonKey(name: 'asal_sekolah')
+  String get asalSekolah => throw _privateConstructorUsedError;
+  String get jurusan => throw _privateConstructorUsedError;
+  @JsonKey(name: 'mulai_magang')
+  String get mulaiMagang => throw _privateConstructorUsedError;
+  @JsonKey(name: 'selesai_magang')
+  String get selesaiMagang => throw _privateConstructorUsedError;
+  String get alamat => throw _privateConstructorUsedError;
+  int get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
+  String get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
+  String get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'no_hp')
+  String get noHp => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $SiswaModelCopyWith<SiswaModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SiswaModelCopyWith<$Res> {
+  factory $SiswaModelCopyWith(
+          SiswaModel value, $Res Function(SiswaModel) then) =
+      _$SiswaModelCopyWithImpl<$Res, SiswaModel>;
+  @useResult
+  $Res call(
+      {int id,
+      @JsonKey(name: 'user_id') int userId,
+      int nisn,
+      @JsonKey(name: 'asal_sekolah') String asalSekolah,
+      String jurusan,
+      @JsonKey(name: 'mulai_magang') String mulaiMagang,
+      @JsonKey(name: 'selesai_magang') String selesaiMagang,
+      String alamat,
+      int status,
+      @JsonKey(name: 'created_at') String createdAt,
+      @JsonKey(name: 'updated_at') String updatedAt,
+      @JsonKey(name: 'no_hp') String noHp});
+}
+
+/// @nodoc
+class _$SiswaModelCopyWithImpl<$Res, $Val extends SiswaModel>
+    implements $SiswaModelCopyWith<$Res> {
+  _$SiswaModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? nisn = null,
+    Object? asalSekolah = null,
+    Object? jurusan = null,
+    Object? mulaiMagang = null,
+    Object? selesaiMagang = null,
+    Object? alamat = null,
+    Object? status = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? noHp = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int,
+      nisn: null == nisn
+          ? _value.nisn
+          : nisn // ignore: cast_nullable_to_non_nullable
+              as int,
+      asalSekolah: null == asalSekolah
+          ? _value.asalSekolah
+          : asalSekolah // ignore: cast_nullable_to_non_nullable
+              as String,
+      jurusan: null == jurusan
+          ? _value.jurusan
+          : jurusan // ignore: cast_nullable_to_non_nullable
+              as String,
+      mulaiMagang: null == mulaiMagang
+          ? _value.mulaiMagang
+          : mulaiMagang // ignore: cast_nullable_to_non_nullable
+              as String,
+      selesaiMagang: null == selesaiMagang
+          ? _value.selesaiMagang
+          : selesaiMagang // ignore: cast_nullable_to_non_nullable
+              as String,
+      alamat: null == alamat
+          ? _value.alamat
+          : alamat // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as int,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      noHp: null == noHp
+          ? _value.noHp
+          : noHp // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SiswaModelImplCopyWith<$Res>
+    implements $SiswaModelCopyWith<$Res> {
+  factory _$$SiswaModelImplCopyWith(
+          _$SiswaModelImpl value, $Res Function(_$SiswaModelImpl) then) =
+      __$$SiswaModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int id,
+      @JsonKey(name: 'user_id') int userId,
+      int nisn,
+      @JsonKey(name: 'asal_sekolah') String asalSekolah,
+      String jurusan,
+      @JsonKey(name: 'mulai_magang') String mulaiMagang,
+      @JsonKey(name: 'selesai_magang') String selesaiMagang,
+      String alamat,
+      int status,
+      @JsonKey(name: 'created_at') String createdAt,
+      @JsonKey(name: 'updated_at') String updatedAt,
+      @JsonKey(name: 'no_hp') String noHp});
+}
+
+/// @nodoc
+class __$$SiswaModelImplCopyWithImpl<$Res>
+    extends _$SiswaModelCopyWithImpl<$Res, _$SiswaModelImpl>
+    implements _$$SiswaModelImplCopyWith<$Res> {
+  __$$SiswaModelImplCopyWithImpl(
+      _$SiswaModelImpl _value, $Res Function(_$SiswaModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? nisn = null,
+    Object? asalSekolah = null,
+    Object? jurusan = null,
+    Object? mulaiMagang = null,
+    Object? selesaiMagang = null,
+    Object? alamat = null,
+    Object? status = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? noHp = null,
+  }) {
+    return _then(_$SiswaModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int,
+      nisn: null == nisn
+          ? _value.nisn
+          : nisn // ignore: cast_nullable_to_non_nullable
+              as int,
+      asalSekolah: null == asalSekolah
+          ? _value.asalSekolah
+          : asalSekolah // ignore: cast_nullable_to_non_nullable
+              as String,
+      jurusan: null == jurusan
+          ? _value.jurusan
+          : jurusan // ignore: cast_nullable_to_non_nullable
+              as String,
+      mulaiMagang: null == mulaiMagang
+          ? _value.mulaiMagang
+          : mulaiMagang // ignore: cast_nullable_to_non_nullable
+              as String,
+      selesaiMagang: null == selesaiMagang
+          ? _value.selesaiMagang
+          : selesaiMagang // ignore: cast_nullable_to_non_nullable
+              as String,
+      alamat: null == alamat
+          ? _value.alamat
+          : alamat // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as int,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      noHp: null == noHp
+          ? _value.noHp
+          : noHp // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SiswaModelImpl implements _SiswaModel {
+  const _$SiswaModelImpl(
+      {required this.id,
+      @JsonKey(name: 'user_id') required this.userId,
+      required this.nisn,
+      @JsonKey(name: 'asal_sekolah') required this.asalSekolah,
+      required this.jurusan,
+      @JsonKey(name: 'mulai_magang') required this.mulaiMagang,
+      @JsonKey(name: 'selesai_magang') required this.selesaiMagang,
+      required this.alamat,
+      required this.status,
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'updated_at') required this.updatedAt,
+      @JsonKey(name: 'no_hp') required this.noHp});
+
+  factory _$SiswaModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SiswaModelImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  @JsonKey(name: 'user_id')
+  final int userId;
+  @override
+  final int nisn;
+  @override
+  @JsonKey(name: 'asal_sekolah')
+  final String asalSekolah;
+  @override
+  final String jurusan;
+  @override
+  @JsonKey(name: 'mulai_magang')
+  final String mulaiMagang;
+  @override
+  @JsonKey(name: 'selesai_magang')
+  final String selesaiMagang;
+  @override
+  final String alamat;
+  @override
+  final int status;
+  @override
+  @JsonKey(name: 'created_at')
+  final String createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  final String updatedAt;
+  @override
+  @JsonKey(name: 'no_hp')
+  final String noHp;
+
+  @override
+  String toString() {
+    return 'SiswaModel(id: $id, userId: $userId, nisn: $nisn, asalSekolah: $asalSekolah, jurusan: $jurusan, mulaiMagang: $mulaiMagang, selesaiMagang: $selesaiMagang, alamat: $alamat, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, noHp: $noHp)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SiswaModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.nisn, nisn) || other.nisn == nisn) &&
+            (identical(other.asalSekolah, asalSekolah) ||
+                other.asalSekolah == asalSekolah) &&
+            (identical(other.jurusan, jurusan) || other.jurusan == jurusan) &&
+            (identical(other.mulaiMagang, mulaiMagang) ||
+                other.mulaiMagang == mulaiMagang) &&
+            (identical(other.selesaiMagang, selesaiMagang) ||
+                other.selesaiMagang == selesaiMagang) &&
+            (identical(other.alamat, alamat) || other.alamat == alamat) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.noHp, noHp) || other.noHp == noHp));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      userId,
+      nisn,
+      asalSekolah,
+      jurusan,
+      mulaiMagang,
+      selesaiMagang,
+      alamat,
+      status,
+      createdAt,
+      updatedAt,
+      noHp);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SiswaModelImplCopyWith<_$SiswaModelImpl> get copyWith =>
+      __$$SiswaModelImplCopyWithImpl<_$SiswaModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SiswaModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SiswaModel implements SiswaModel {
+  const factory _SiswaModel(
+      {required final int id,
+      @JsonKey(name: 'user_id') required final int userId,
+      required final int nisn,
+      @JsonKey(name: 'asal_sekolah') required final String asalSekolah,
+      required final String jurusan,
+      @JsonKey(name: 'mulai_magang') required final String mulaiMagang,
+      @JsonKey(name: 'selesai_magang') required final String selesaiMagang,
+      required final String alamat,
+      required final int status,
+      @JsonKey(name: 'created_at') required final String createdAt,
+      @JsonKey(name: 'updated_at') required final String updatedAt,
+      @JsonKey(name: 'no_hp') required final String noHp}) = _$SiswaModelImpl;
+
+  factory _SiswaModel.fromJson(Map<String, dynamic> json) =
+      _$SiswaModelImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  @JsonKey(name: 'user_id')
+  int get userId;
+  @override
+  int get nisn;
+  @override
+  @JsonKey(name: 'asal_sekolah')
+  String get asalSekolah;
+  @override
+  String get jurusan;
+  @override
+  @JsonKey(name: 'mulai_magang')
+  String get mulaiMagang;
+  @override
+  @JsonKey(name: 'selesai_magang')
+  String get selesaiMagang;
+  @override
+  String get alamat;
+  @override
+  int get status;
+  @override
+  @JsonKey(name: 'created_at')
+  String get createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  String get updatedAt;
+  @override
+  @JsonKey(name: 'no_hp')
+  String get noHp;
+  @override
+  @JsonKey(ignore: true)
+  _$$SiswaModelImplCopyWith<_$SiswaModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

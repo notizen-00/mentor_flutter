@@ -13,6 +13,7 @@ class LogbookBloc extends Bloc<LogbookEvent, LogbookState> {
   LogbookBloc({required this.logbookRepository}) : super(LogbookInitial()) {
     on<CreateLogbook>(_onCreateLogbook);
     on<LoadCurrentLogbook>(_onLoadCurrentLogbook);
+    on<VerifikasiLogbook>(_onVerifikasiLogbook);
   }
 
   Future<void> _onCreateLogbook(
@@ -21,7 +22,29 @@ class LogbookBloc extends Bloc<LogbookEvent, LogbookState> {
   ) async {
     emit(LogbookLoading());
     try {
-      final logbook = await logbookRepository.create(event.logbookDatas);
+      final logbook = await logbookRepository.create(
+          event.locationId, event.namaTask, event.keterangan);
+
+      if (logbook != '') {
+        final List<Logbook> logbooks =
+            await logbookRepository.getCurrentLogbook();
+        emit(LogbookLoaded(logbooks));
+      } else {
+        emit(LogbookError('Logbook kosong'));
+      }
+    } catch (e) {
+      emit(LogbookError(e.toString()));
+    }
+  }
+
+  Future<void> _onVerifikasiLogbook(
+    VerifikasiLogbook event,
+    Emitter<LogbookState> emit,
+  ) async {
+    emit(LogbookLoading());
+    try {
+      final logbook = await logbookRepository.verifikasi(
+          event.logbookId, event.rating, event.keterangan);
 
       if (logbook != '') {
         final List<Logbook> logbooks =

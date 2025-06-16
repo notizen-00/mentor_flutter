@@ -10,6 +10,8 @@ import 'package:internship_app/core/const/constanst.dart';
 import 'package:internship_app/core/utils/toast_utils.dart';
 import 'package:internship_app/feature/Logbook/bloc/logbook_bloc.dart';
 import 'package:internship_app/feature/Logbook/data/model/logbook_model.dart';
+import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
+import 'package:internship_app/feature/Task/data/model/task_model.dart';
 
 class Mentor {
   final int id;
@@ -33,33 +35,31 @@ class LogbookFormDrawer extends StatefulWidget {
 }
 
 class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
-  final TextEditingController _kegiatanController = TextEditingController();
-  final TextEditingController _permasalahanController = TextEditingController();
-  final TextEditingController _solusiController = TextEditingController();
+  final TextEditingController _namaTaskController = TextEditingController();
+  final TextEditingController _keteranganController = TextEditingController();
 
   File? _imageFile;
-  bool _isPicking = false;
 
   int? _selectedMentorId;
-  List<Mentor> _mentors = [];
+  List<Location> _mentors = [];
   bool _isLoadingMentor = true;
 
   Future<void> fetchMentors() async {
     try {
       const baseUrl = AppConstants.baseUrl;
       final response =
-          await http.get(Uri.parse('$baseUrl/mentor')); // Ganti URL
+          await http.get(Uri.parse('$baseUrl/get_location')); // Ganti URL
       log(response.body);
       if (!mounted) return;
       if (response.statusCode == 200) {
         final List data = jsonDecode(response.body);
         log('data $data');
         setState(() {
-          _mentors = data.map((e) => Mentor.fromJson(e)).toList();
+          _mentors = data.map((e) => Location.fromJson(e)).toList();
           _isLoadingMentor = false;
         });
       } else {
-        showErrorToast(context, 'Gagal memuat data mentor');
+        showErrorToast(context, 'Gagal memuat data lokasi');
         setState(() => _isLoadingMentor = false);
       }
     } catch (e) {
@@ -68,53 +68,24 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
     }
   }
 
-  Future<void> _pickImage() async {
-    if (_isPicking) return;
-    setState(() => _isPicking = true);
-
-    try {
-      final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (picked != null) {
-        setState(() {
-          _imageFile = File(picked.path);
-        });
-      }
-    } catch (e) {
-      if (!mounted) return;
-      showErrorToast(context, 'Gagal memilih gambar: $e');
-    } finally {
-      setState(() => _isPicking = false);
-    }
-  }
-
   void _submitForm() {
-    final kegiatan = _kegiatanController.text.trim();
-    final permasalahan = _permasalahanController.text.trim();
-    final solusi = _solusiController.text.trim();
+    final namaTask = _namaTaskController.text.trim();
+    final keterangan = _keteranganController.text.trim();
 
-    if (kegiatan.isEmpty ||
-        permasalahan.isEmpty ||
-        solusi.isEmpty ||
-        _selectedMentorId == null) {
+    if (namaTask.isEmpty || keterangan.isEmpty || _selectedMentorId == null) {
       showErrorToast(context, 'Harap isi semua form!');
       return;
     }
 
-    final logbookData = LogbookData(
-      mentorId: _selectedMentorId!,
-      permasalahan: permasalahan,
-      solusi: solusi,
-      namaKegiatan: kegiatan,
-      foto: _imageFile,
-    );
-
-    context.read<LogbookBloc>().add(CreateLogbook(logbookData));
+    context.read<TaskBloc>().add(CreateTask(
+        locationId: _selectedMentorId!,
+        namaTask: namaTask,
+        keterangan: keterangan));
 
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content:
-            Text('Logbook berhasil dikirim ke mentor ID: $_selectedMentorId'),
+      const SnackBar(
+        content: Text('Task berhasil di broadcast ke Siswa Magang'),
       ),
     );
   }
@@ -127,9 +98,8 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
 
   @override
   void dispose() {
-    _kegiatanController.dispose();
-    _permasalahanController.dispose();
-    _solusiController.dispose();
+    _namaTaskController.dispose();
+    _keteranganController.dispose();
     super.dispose();
   }
 
@@ -146,7 +116,7 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Isi Logbook',
+                Text('Buat Task',
                     style: Theme.of(context).textTheme.titleLarge),
                 const SizedBox(height: 16),
                 _isLoadingMentor
@@ -154,7 +124,7 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
                     : DropdownButtonFormField<int>(
                         value: _selectedMentorId,
                         decoration: const InputDecoration(
-                          labelText: 'Pilih Mentor',
+                          labelText: 'Pilih Lokasi',
                           border: OutlineInputBorder(),
                         ),
                         items: _mentors.map((mentor) {
@@ -163,7 +133,7 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
                             child: SizedBox(
                               width: width * 0.6,
                               child: Text(
-                                mentor.name,
+                                mentor.namaLokasi,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -177,49 +147,22 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
                       ),
                 const SizedBox(height: 12),
                 TextField(
-                  controller: _kegiatanController,
+                  controller: _namaTaskController,
                   decoration: const InputDecoration(
-                    labelText: 'Nama Kegiatan',
+                    labelText: 'Nama Task',
                     border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 12),
                 TextField(
-                  controller: _permasalahanController,
+                  controller: _keteranganController,
                   decoration: const InputDecoration(
-                    labelText: 'Permasalahan',
+                    labelText: 'Keterangan',
                     border: OutlineInputBorder(),
                   ),
                   maxLines: 2,
                 ),
                 const SizedBox(height: 12),
-                TextField(
-                  controller: _solusiController,
-                  decoration: const InputDecoration(
-                    labelText: 'Solusi',
-                    border: OutlineInputBorder(),
-                  ),
-                  maxLines: 2,
-                ),
-                const SizedBox(height: 16),
-                if (_imageFile != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        _imageFile!,
-                        height: 150,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                TextButton.icon(
-                  onPressed: _isPicking ? null : _pickImage,
-                  icon: const Icon(Icons.photo_library),
-                  label: const Text('Upload Foto'),
-                ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(

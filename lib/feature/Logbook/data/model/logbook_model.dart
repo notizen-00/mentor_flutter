@@ -80,7 +80,30 @@ class User with _$User {
     @JsonKey(name: 'email_verified_at') String? emailVerifiedAt,
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
+    String? picture,
+    SiswaModel? siswa,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
+
+@freezed
+class SiswaModel with _$SiswaModel {
+  const factory SiswaModel({
+    required int id,
+    @JsonKey(name: 'user_id') required int userId,
+    required int nisn,
+    @JsonKey(name: 'asal_sekolah') required String asalSekolah,
+    required String jurusan,
+    @JsonKey(name: 'mulai_magang') required String mulaiMagang,
+    @JsonKey(name: 'selesai_magang') required String selesaiMagang,
+    required String alamat,
+    required int status,
+    @JsonKey(name: 'created_at') required String createdAt,
+    @JsonKey(name: 'updated_at') required String updatedAt,
+    @JsonKey(name: 'no_hp') required String noHp,
+  }) = _SiswaModel;
+
+  factory SiswaModel.fromJson(Map<String, dynamic> json) =>
+      _$SiswaModelFromJson(json);
 }

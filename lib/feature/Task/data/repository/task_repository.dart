@@ -13,6 +13,44 @@ class TaskRepository {
 
   TaskRepository(this._tokenManager);
 
+  Future<String> create(
+    int locationId,
+    String namaTask,
+    String keterangan,
+  ) async {
+    try {
+      final token = await _tokenManager.getToken();
+      log('Token: $token');
+
+      final uri = Uri.parse('$baseUrl/task');
+      final request = http.MultipartRequest('POST', uri)
+        ..headers.addAll(
+            {'Authorization': 'Bearer $token', 'Accept': 'Application/json'})
+        ..fields['location_id'] = locationId.toString()
+        ..fields['nama_task'] = namaTask
+        ..fields['keterangan'] = keterangan;
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      log('Status Code: ${response.statusCode}');
+      log('Response Body: ${response.body}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return 'sukses';
+      } else {
+        final error = jsonDecode(response.body);
+        log('Gagal simpan: $error', name: 'TaskRepository');
+        throw Exception(error['message'] ?? 'Gagal menyimpan data task.');
+      }
+    } catch (e, stackTrace) {
+      log('Terjadi kesalahan saat menyimpan data task: $e',
+          name: 'LogbookRepository');
+      log('StackTrace: $stackTrace', name: 'LogbookRepository');
+      rethrow;
+    }
+  }
+
   // Future<String> create(TaskData task) async {
   //   try {
   //     final token = await _tokenManager.getToken();

@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internship_app/core/const/constanst.dart';
+import 'package:internship_app/core/utils/image_helper.dart';
 import 'package:internship_app/core/utils/toast_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:internship_app/feature/Logbook/bloc/logbook_bloc.dart';
@@ -170,14 +172,29 @@ class _LogbookPageState extends State<LogbookPage>
                                             const SizedBox(height: 4),
                                             Row(
                                               children: [
-                                                const Icon(Icons.person,
-                                                    size: 16,
-                                                    color: Colors.grey),
+                                                ClipOval(
+                                                  child: UniversalNetworkImage(
+                                                    url:
+                                                        '${AppConstants.baseStorage}/${logbook.user.picture}',
+                                                    width: 40,
+                                                    height: 40,
+                                                  ),
+                                                ),
                                                 const SizedBox(width: 4),
                                                 Text(
-                                                  logbook.mentor.name,
+                                                  logbook.user.name,
                                                   style: const TextStyle(
-                                                    fontSize: 12,
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 3,
+                                                ),
+                                                Text(
+                                                  ', ${logbook.user.siswa!.asalSekolah}',
+                                                  style: const TextStyle(
+                                                    fontSize: 11,
                                                     color: Colors.grey,
                                                   ),
                                                 ),
@@ -199,8 +216,38 @@ class _LogbookPageState extends State<LogbookPage>
                                             ],
                                           ],
                                         ),
-                                        trailing:
+                                        trailing: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            if (!logbook
+                                                .status) // hanya tampil jika belum disetujui
+                                              ElevatedButton(
+                                                onPressed: () =>
+                                                    _handleVerifikasi(
+                                                        context, logbook),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.green,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 12),
+                                                  minimumSize: Size.zero,
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  textStyle: const TextStyle(
+                                                      fontSize: 11),
+                                                ),
+                                                child: const Text(
+                                                  'Verifikasi',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            const SizedBox(height: 4),
                                             const Icon(Icons.chevron_right),
+                                          ],
+                                        ),
                                         onTap: () => _showDetailBottomSheet(
                                             context, logbook),
                                       ),
@@ -368,6 +415,140 @@ class _LogbookPageState extends State<LogbookPage>
                 ),
               ],
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _handleVerifikasi(BuildContext context, dynamic logbook) {
+    final TextEditingController _keteranganController = TextEditingController();
+    double _rating = 3;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => Padding(
+        padding:
+            MediaQuery.of(context).viewInsets.add(const EdgeInsets.all(16)),
+        child: StatefulBuilder(
+          builder: (context, setState) => SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[400],
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                Text(
+                  logbook.namaKegiatan,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 12),
+                const Text('Permasalahan:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(logbook.permasalahan),
+                const SizedBox(height: 8),
+                const Text('Solusi:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(logbook.solusi),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Status: ${logbook.status ? 'Disetujui' : 'Menunggu'}',
+                      style: TextStyle(
+                        color: logbook.status ? Colors.green : Colors.orange,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(_formatDate(logbook.createdAt)),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    _fixImageUrl(logbook.foto),
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) =>
+                        const Icon(Icons.broken_image),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Mentor: ${logbook.mentor.name}',
+                  style: const TextStyle(fontStyle: FontStyle.italic),
+                ),
+                const SizedBox(height: 16),
+                const Text('Rating:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Slider(
+                  value: _rating,
+                  min: 1,
+                  max: 5,
+                  divisions: 4,
+                  label: _rating.toStringAsFixed(0),
+                  onChanged: (value) => setState(() {
+                    _rating = value;
+                  }),
+                ),
+                const SizedBox(height: 12),
+                const Text('Catatan:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                TextFormField(
+                  controller: _keteranganController,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Masukkan catatan/verifikasi tambahan',
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    ),
+                    label: const Text(
+                      'Verifikasi',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      final keterangan = _keteranganController.text.trim();
+
+                      context.read<LogbookBloc>().add(VerifikasiLogbook(
+                          logbookId: logbook.id,
+                          rating: _rating,
+                          keterangan: keterangan));
+
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      backgroundColor: Colors.green,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),

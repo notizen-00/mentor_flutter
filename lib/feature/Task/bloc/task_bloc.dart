@@ -11,28 +11,29 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final TaskRepository taskRepository;
 
   TaskBloc({required this.taskRepository}) : super(TaskInitial()) {
-    // on<CreateTask>(_onCreateTask);
+    on<CreateTask>(_onCreateTask);
     on<LoadCurrentTask>(_onLoadCurrentTask);
   }
 
-  // Future<void> _onCreateTask(
-  //   CreateTask event,
-  //   Emitter<TaskState> emit,
-  // ) async {
-  //   emit(TaskLoading());
-  //   try {
-  //     final task = await taskRepository.create(event.taskDatas);
+  Future<void> _onCreateTask(
+    CreateTask event,
+    Emitter<TaskState> emit,
+  ) async {
+    emit(TaskLoading());
+    try {
+      final task = await taskRepository.create(
+          event.locationId, event.namaTask, event.keterangan);
 
-  //     if (task != '') {
-  //       final List<TaskModel> tasks = await taskRepository.getCurrentTask();
-  //       emit(TaskLoaded(tasks));
-  //     } else {
-  //       emit(TaskError('Task kosong'));
-  //     }
-  //   } catch (e) {
-  //     emit(TaskError(e.toString()));
-  //   }
-  // }
+      if (task != '') {
+        final List<TaskModel> tasks = await taskRepository.getCurrentTask();
+        emit(TaskLoaded(tasks));
+      } else {
+        emit(TaskError('Task kosong'));
+      }
+    } catch (e) {
+      emit(TaskError(e.toString()));
+    }
+  }
 
   Future<void> _onLoadCurrentTask(
     LoadCurrentTask event,
