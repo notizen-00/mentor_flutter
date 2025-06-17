@@ -21,7 +21,7 @@ class SiswaBloc extends Bloc<SiswaEvent, SiswaState> {
       emit(SiswaLoading());
       final siswa = await siswaManager.getSiswa();
       if (siswa != null) {
-        final siswaDto = SiswaModel.fromJson(siswa as Map<String, dynamic>);
+        final siswaDto = UserModel.fromJson(siswa as Map<String, dynamic>);
 
         emit(SiswaSuccess(siswaDto));
       } else {
@@ -50,21 +50,6 @@ class SiswaBloc extends Bloc<SiswaEvent, SiswaState> {
       } else {
         log('kamu di error ');
         emit(SiswaError('gak ada data siswa'));
-      }
-    });
-
-    on<CreateSiswa>((event, emit) async {
-      try {
-        emit(SiswaLoading());
-        final response = await siswaRepository.create(event.siswa);
-
-        if (response != null) {
-          emit(SiswaSuccess(response));
-        } else {
-          emit(SiswaError('Login failed. Please check your credentials.'));
-        }
-      } catch (e) {
-        emit(SiswaError('An error occurred during login.'));
       }
     });
   }

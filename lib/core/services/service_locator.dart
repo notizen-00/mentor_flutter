@@ -76,7 +76,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => AbsensiManager(sl()));
 
   // Register Repository
-  sl.registerLazySingleton(() => AuthRepository(sl()));
+  sl.registerLazySingleton(() => AuthRepository(sl(), sl()));
   sl.registerLazySingleton(() => SiswaRepository(sl(), sl()));
   sl.registerLazySingleton(() => LogbookRepository(sl(), sl()));
   sl.registerLazySingleton(() => InformasiRepository(sl()));

@@ -8,10 +8,10 @@ import 'package:internship_app/core/utils/notification_helper.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 void connectToPusher() async {
-  const reverbHost = '10.10.10.243';
+  const reverbHost = '10.6.93.174';
   const reverbAppKey = 'wxchwyrzgjxjax9qvx5a';
 
-  const wsUrl = 'ws://$reverbHost:8081/app/$reverbAppKey';
+  const wsUrl = 'ws://$reverbHost:8080/app/$reverbAppKey';
   final channel = WebSocketChannel.connect(Uri.parse(wsUrl));
 
   // Kirim subscribe untuk dua channel

@@ -7,7 +7,6 @@ import 'package:internship_app/core/utils/image_helper.dart';
 import 'package:internship_app/core/utils/toast_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:internship_app/feature/Logbook/bloc/logbook_bloc.dart';
-import 'package:timelines/timelines.dart';
 
 class LogbookPage extends StatefulWidget {
   const LogbookPage({super.key});
@@ -218,6 +217,8 @@ class _LogbookPageState extends State<LogbookPage>
                                         ),
                                         trailing: Column(
                                           mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
                                           children: [
                                             if (!logbook
                                                 .status) // hanya tampil jika belum disetujui
@@ -244,7 +245,7 @@ class _LogbookPageState extends State<LogbookPage>
                                                       color: Colors.white),
                                                 ),
                                               ),
-                                            const SizedBox(height: 4),
+                                            const SizedBox(height: 1),
                                             const Icon(Icons.chevron_right),
                                           ],
                                         ),
@@ -359,23 +360,35 @@ class _LogbookPageState extends State<LogbookPage>
                   ),
                 ),
                 const SizedBox(height: 12),
-                FixedTimeline.tileBuilder(
-                  theme: TimelineThemeData(
-                    nodePosition: 0,
-                    color: Colors.green,
-                    indicatorTheme: const IndicatorThemeData(
-                      position: 0,
-                      size: 20,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Timeline dot and line
+                    Column(
+                      children: [
+                        // Dot
+                        Container(
+                          width: 20,
+                          height: 20,
+                          decoration: const BoxDecoration(
+                            color: Colors.green,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.check,
+                              color: Colors.white, size: 12),
+                        ),
+                        // Line
+                        Container(
+                          width: 2.5,
+                          height: 80, // adjust based on content height
+                          color: Colors.green,
+                        ),
+                      ],
                     ),
-                    connectorTheme: const ConnectorThemeData(
-                      thickness: 2.5,
-                    ),
-                  ),
-                  builder: TimelineTileBuilder.connected(
-                    connectionDirection: ConnectionDirection.before,
-                    itemCount: 1,
-                    contentsBuilder: (_, index) => Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
+                    const SizedBox(width: 12),
+
+                    // Content
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -386,6 +399,7 @@ class _LogbookPageState extends State<LogbookPage>
                           const SizedBox(height: 4),
                           Row(children: [
                             const Icon(Icons.person),
+                            const SizedBox(width: 4),
                             Text(logbook.logbookVerifikasi.mentor.name),
                           ]),
                           Row(
@@ -405,13 +419,7 @@ class _LogbookPageState extends State<LogbookPage>
                         ],
                       ),
                     ),
-                    indicatorBuilder: (_, index) => const DotIndicator(
-                      color: Colors.green,
-                      child: Icon(Icons.check, color: Colors.white, size: 12),
-                    ),
-                    connectorBuilder: (_, index, ___) =>
-                        const SolidLineConnector(color: Colors.green),
-                  ),
+                  ],
                 ),
               ],
             ],

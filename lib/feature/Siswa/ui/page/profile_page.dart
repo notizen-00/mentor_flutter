@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:internship_app/core/const/constanst.dart';
 import 'package:internship_app/core/utils/image_helper.dart';
 import 'package:internship_app/core/utils/toast_utils.dart';
@@ -11,13 +12,12 @@ import 'package:internship_app/feature/Auth/bloc/auth_bloc.dart';
 import 'package:internship_app/feature/Auth/ui/screen/Intro_screen.dart';
 import 'package:internship_app/feature/Root/ui/root_page.dart';
 import 'package:internship_app/feature/Siswa/bloc/siswa_bloc.dart';
-import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -28,19 +28,32 @@ class ProfilePage extends StatelessWidget {
 
     if (pickedFile == null) return;
 
-    final file = File(pickedFile.path);
-
     try {
       final dio = Dio();
-      final formData = FormData.fromMap({
-        'foto': await MultipartFile.fromFile(file.path,
-            filename: basename(file.path)),
-      });
+      MultipartFile file;
+
+      if (kIsWeb) {
+        // Flutter Web: read as bytes
+        Uint8List bytes = await pickedFile.readAsBytes();
+        file = MultipartFile.fromBytes(
+          bytes,
+          filename: path.basename(pickedFile.name),
+          contentType: MediaType("image", "jpeg"), // or infer from file name
+        );
+      } else {
+        // Mobile or Desktop
+        file = await MultipartFile.fromFile(
+          pickedFile.path,
+          filename: path.basename(pickedFile.path),
+        );
+      }
+
+      final formData = FormData.fromMap({'foto': file});
 
       final tokenManager = TokenManager(await SharedPreferences.getInstance());
       final token = await tokenManager.getToken();
-      log(token.toString());
       const baseUrl = AppConstants.baseUrl;
+
       final response = await dio.post(
         '$baseUrl/update/foto-profil',
         data: formData,
@@ -54,7 +67,6 @@ class ProfilePage extends StatelessWidget {
 
       if (response.statusCode == 200) {
         showSuccessToast(context, "Nah ngunu kan CAKEP !");
-
         context.read<SiswaBloc>().add(SiswaCheck());
       } else {
         showInfoToast(context, "Gagal upload foto");
@@ -95,7 +107,7 @@ class ProfilePage extends StatelessWidget {
                             alignment: Alignment.center,
                             children: [
                               UniversalNetworkImage(
-                                url: '$storageUrl/${siswa.user.user.picture}',
+                                url: '$storageUrl/${siswa.user.picture}',
                                 width: 80,
                                 height: 70,
                               ),
@@ -126,15 +138,15 @@ class ProfilePage extends StatelessWidget {
                         ),
 
                         const SizedBox(height: 12),
-                        Text(siswa.user.user.name,
+                        Text(siswa.user.name,
                             style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white)),
                         const SizedBox(height: 4),
-                        Text(siswa.user.user.email,
+                        Text(siswa.user.email,
                             style: const TextStyle(color: Colors.white70)),
-                        if (siswa.user.user.picture == null) ...[
+                        if (siswa.user.picture == null) ...[
                           const SizedBox(height: 10),
                           const BlinkText(
                             text: 'NDANG UPDATE FOTO GAWE RAIMU !',
@@ -147,39 +159,6 @@ class ProfilePage extends StatelessWidget {
                           const SizedBox(height: 10),
                         ],
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.calendar_today,
-                                color: Colors.white70, size: 16),
-                            Text(
-                              "Mulai: ${DateFormat('dd MMM yyyy').format(DateTime.parse(siswa.user.mulaiMagang))}",
-                              style: const TextStyle(color: Colors.white70),
-                            ),
-                            const Padding(padding: EdgeInsets.all(12)),
-                            const Icon(Icons.calendar_today_outlined,
-                                color: Colors.white70, size: 16),
-                            Text(
-                              "Selesai: ${DateFormat('dd MMM yyyy').format(DateTime.parse(siswa.user.selesaiMagang))}",
-                              style: const TextStyle(color: Colors.white70),
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.timelapse,
-                                color: Colors.orangeAccent, size: 18),
-                            const SizedBox(width: 8),
-                            Text(
-                              "Sisa waktu : ${DateTime.parse(siswa.user.selesaiMagang).difference(DateTime.now()).inDays} hari",
-                              style: const TextStyle(
-                                  color: Colors.orangeAccent, fontSize: 20),
-                            ),
-                          ],
-                        ),
                         const SizedBox(height: 10),
 
                         // Points section

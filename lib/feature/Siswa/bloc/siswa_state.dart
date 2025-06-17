@@ -7,7 +7,7 @@ class SiswaInitial extends SiswaState {}
 class SiswaLoading extends SiswaState {}
 
 class SiswaSuccess extends SiswaState {
-  final SiswaModel user;
+  final UserModel user;
   SiswaSuccess(this.user);
 }
 

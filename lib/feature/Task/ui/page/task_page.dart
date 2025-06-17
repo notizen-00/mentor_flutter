@@ -6,7 +6,6 @@ import 'package:internship_app/core/utils/toast_utils.dart';
 import 'package:internship_app/feature/Task/ui/page/task_detail_page.dart';
 import 'package:intl/intl.dart';
 import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
-import 'package:timelines/timelines.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -33,14 +32,6 @@ class _TaskPageState extends State<TaskPage>
 
   String _formatDate(DateTime date) {
     return DateFormat('dd MMMM yyyy', 'id_ID').format(date);
-  }
-
-  String _fixImageUrl(String url) {
-    log(url);
-    return url.replaceFirst(
-      'http://localhost/public/Tasks/Tasks/',
-      'http://localhost/storage/Tasks/',
-    );
   }
 
   @override

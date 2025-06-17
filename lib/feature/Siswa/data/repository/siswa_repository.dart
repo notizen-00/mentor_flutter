@@ -114,14 +114,14 @@ class SiswaRepository {
     }
   }
 
-  Future<SiswaModel?> getCurrentUser() async {
+  Future<UserModel?> getCurrentUser() async {
     final token = await _tokenManager.getToken();
     if (token == null) {
       throw Exception('Token tidak tersedia');
     }
 
     final response = await http.get(
-      Uri.parse('$baseUrl/siswa/check/data'),
+      Uri.parse('$baseUrl/user'),
       headers: {
         'Authorization': 'Bearer $token',
         'Accept': 'application/json',
@@ -132,14 +132,14 @@ class SiswaRepository {
       final body = jsonDecode(response.body) as Map<String, dynamic>;
 
       // Pastikan formatnya { status: 'success', data: { ... } }
-      if (body['status'] == 'success' && body['data'] is Map<String, dynamic>) {
-        final data = body['data'] as Map<String, dynamic>;
+      if (body['status'] == 'success' && body['user'] is Map<String, dynamic>) {
+        final data = body['user'] as Map<String, dynamic>;
 
         // Simpan ke local storage
         await _siswaManager.saveSiswa(jsonEncode(data));
 
         // Kembalikan model
-        return SiswaModel.fromJson(data);
+        return UserModel.fromJson(data);
       } else {
         return null;
       }

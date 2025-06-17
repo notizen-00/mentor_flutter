@@ -127,7 +127,7 @@ class _RootPageState extends State<RootPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             UniversalNetworkImage(
-                              url: '$storageUrl/${siswa.user.user.picture}',
+                              url: '$storageUrl/${siswa.user.picture}',
                               width: 80,
                               height: 70,
                             ),
@@ -136,14 +136,14 @@ class _RootPageState extends State<RootPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  siswa.user.user.name,
+                                  siswa.user.name,
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  '${siswa.user.asalSekolah} - ${siswa.user.jurusan}',
+                                  '${siswa.user.email}}',
                                   style: const TextStyle(
                                     color: Colors.white70,
                                     fontSize: 14,

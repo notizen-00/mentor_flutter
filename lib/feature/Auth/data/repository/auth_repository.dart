@@ -3,14 +3,16 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 import 'package:internship_app/core/const/constanst.dart';
+import 'package:internship_app/core/utils/siswa_manager.dart';
 import 'package:internship_app/core/utils/token_manager.dart';
 import 'package:internship_app/feature/Auth/data/model/user_model.dart';
 
 class AuthRepository {
   final String baseUrl = AppConstants.baseUrl;
   final TokenManager _tokenManager;
+  final SiswaManager _siswaManager;
 
-  AuthRepository(this._tokenManager);
+  AuthRepository(this._tokenManager, this._siswaManager);
 
   Future<UserModel?> login(String email, String password) async {
     final response = await http.post(
@@ -27,8 +29,10 @@ class AuthRepository {
       final user = UserModel.fromJson(body['user']);
 
       log('Token diterima: $token', name: 'AuthRepository');
+      log(jsonDecode(body['user'].toString()));
 
       await _tokenManager.saveToken(token);
+      await _siswaManager.saveSiswa(jsonDecode(body['user'].toString()));
 
       log('$token');
 
