@@ -1,86 +1,112 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
+import 'package:internship_app/core/services/service_locator.dart';
 import 'package:internship_app/core/utils/notification_helper.dart';
+import 'package:internship_app/core/utils/siswa_manager.dart';
+import 'package:internship_app/core/utils/token_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-void connectToPusher() async {
+Future<void> connectToPusher() async {
   const reverbHost = '10.6.93.174';
-  const reverbAppKey = 'wxchwyrzgjxjax9qvx5a';
-
+  const reverbAppKey = '12345';
   const wsUrl = 'ws://$reverbHost:8080/app/$reverbAppKey';
+  const broadcastAuthUrl = 'http://$reverbHost/api/broadcasting/auth';
+
+  final token = await sl<TokenManager>().getToken();
+  final siswa = await sl<SiswaManager>().getSiswa();
+
+  if (token == null || siswa == null) {
+    log('[Pusher] Token atau siswa tidak tersedia!');
+    return;
+  }
+
+  final privateChannel = 'private-tasks.${siswa.id}';
+  log('[Pusher] Connecting to channel: $privateChannel');
+
   final channel = WebSocketChannel.connect(Uri.parse(wsUrl));
 
-  // Kirim subscribe untuk dua channel
-  final subscriptions = [
-    {
-      "event": "pusher:subscribe",
-      "data": {"channel": "delivery"}
-    },
-    {
-      "event": "pusher:subscribe",
-      "data": {"channel": "public.task"}
-    },
-  ];
-
-  for (var sub in subscriptions) {
-    channel.sink.add(jsonEncode(sub));
-  }
+  log('$channel');
 
   channel.stream.listen(
     (message) async {
-      log('Received Ws: $message');
+      log('[Pusher] Message: $message');
 
       try {
         final parsed = jsonDecode(message);
 
-        // Ping/pong handling
-        if (message.toString().contains('ping')) {
+        // Pusher ping -> respond with pong
+        if (parsed['event'] == 'pusher:ping') {
           channel.sink.add(json.encode({"event": "pusher:pong"}));
-          log('pong sent');
-          return;
+          log('[Pusher] Sent pong');
         }
 
-        final channelName = parsed['channel'];
-        final eventName = parsed['event'];
-        final rawData = parsed['data'];
+        // Saat koneksi berhasil dan kita mendapatkan socket_id
+        if (parsed['event'] == 'pusher:connection_established') {
+          final connectionData = jsonDecode(parsed['data']);
+          final socketId = connectionData['socket_id'];
+          log('[Pusher] Connected with socket_id: $socketId');
 
-        if (channelName == 'delivery') {
+          // Kirim request auth ke backend
+          final response = await http.post(
+            Uri.parse(broadcastAuthUrl),
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'channel_name': privateChannel,
+              'socket_id': socketId,
+            }),
+          );
+
+          if (response.statusCode == 200) {
+            final authData = jsonDecode(response.body);
+            final authToken = authData['auth'];
+
+            final subscribePayload = {
+              'event': 'pusher:subscribe',
+              'data': {
+                'channel': privateChannel,
+                'auth': authToken,
+              }
+            };
+
+            channel.sink.add(jsonEncode(subscribePayload));
+            log('[Pusher] Subscribed to $privateChannel');
+          } else {
+            log('[Pusher] Auth failed: ${response.body}');
+            channel.sink.close();
+          }
+        }
+
+        // Jika pesan dari channel private
+        if (parsed['channel'] == privateChannel) {
+          final rawData = parsed['data'];
           final data = jsonDecode(rawData);
+
           final status = data['status'] ?? 'Status tidak diketahui';
           final handler = data['deliveryHandler'] ?? 'Pengirim tidak diketahui';
+
           final notifMessage = 'Judul: $status\nDeskripsi: $handler';
-          log('Notifikasi Delivery: $notifMessage');
-          // await showNotification('Pengumuman', notifMessage);
+          await showNotification('Pengumuman', notifMessage);
         }
 
-        if (channelName == 'public.task' && eventName == 'event.task') {
-          final rawData = parsed['data'];
-
-          // Decode pertama karena 'data' masih berupa string JSON
-          final decodedData = jsonDecode(rawData);
-
-          // Ambil task-nya
-          final task = decodedData['task'];
-
-          final kegiatan = task['nama_kegiatan'] ?? 'Kegiatan Baru';
-          final waktu = task['created_at'] ?? 'Waktu tidak diketahui';
-
-          final notifMessage = 'Logbook Baru: $kegiatan\nWaktu: $waktu';
-          log('Notifikasi Task: $notifMessage');
-          await showNotification('Logbook Masuk', notifMessage);
-
-          // Kalau pakai BLoC, bisa kirim event ke BLoC juga
-          // context.read<LogbookBloc>().add(LogbookReceived(task));
+        // Jika ada error dari pusher
+        if (parsed['event'] == 'pusher:error') {
+          log('[Pusher] ERROR: ${parsed['data']}');
         }
       } catch (e) {
-        log('Error parsing WebSocket message: $e');
+        log('[Pusher] Error parsing message: $e');
       }
     },
-    onDone: () => log('WebSocket connection closed.'),
-    onError: (error) => log('WebSocket error: $error'),
+    onDone: () {
+      log('[Pusher] Connection closed.');
+    },
+    onError: (error) {
+      log('[Pusher] Error: $error');
+    },
   );
 }

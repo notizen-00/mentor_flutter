@@ -25,16 +25,27 @@ class AuthRepository {
 
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
-      final token = body['token'];
-      final user = UserModel.fromJson(body['user']);
 
+      // Logging user map secara rapi
+      final userMap = body['user'];
+      log('User map: $userMap', name: 'AuthRepository');
+      log('${userMap.runtimeType}');
+      final token = body['token'];
+      final user = UserModel.fromJson(userMap);
+
+      print(user);
+
+      log('User parsed: $user', name: 'AuthRepository');
       log('Token diterima: $token', name: 'AuthRepository');
-      log(jsonDecode(body['user'].toString()));
 
       await _tokenManager.saveToken(token);
-      await _siswaManager.saveSiswa(jsonDecode(body['user'].toString()));
 
-      log('$token');
+      // Simpan user ke shared preferences dalam bentuk String JSON
+      await _siswaManager.saveSiswa(jsonEncode(userMap));
+
+      // Optional: Ambil kembali untuk validasi
+      final savedUser = await _siswaManager.getSiswa();
+      log('User dari SharedPreferences: $savedUser', name: 'AuthRepository');
 
       return user;
     } else {
