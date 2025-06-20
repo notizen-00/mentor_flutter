@@ -15,13 +15,13 @@ _$TaskModelImpl _$$TaskModelImplFromJson(Map<String, dynamic> json) =>
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
       locationId: (json['location_id'] as num).toInt(),
+      keterangan: json['keterangan'] as String?,
       taskTool: (json['task_tool'] as List<dynamic>)
           .map((e) => TaskTool.fromJson(e as Map<String, dynamic>))
           .toList(),
       taskUser: (json['task_user'] as List<dynamic>?)
           ?.map((e) => TaskUser.fromJson(e as Map<String, dynamic>))
           .toList(),
-      keterangan: json['keterangan'] as String?,
       mentor: Mentor.fromJson(json['mentor'] as Map<String, dynamic>),
       location: Location.fromJson(json['location'] as Map<String, dynamic>),
     );
@@ -35,9 +35,9 @@ Map<String, dynamic> _$$TaskModelImplToJson(_$TaskModelImpl instance) =>
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
       'location_id': instance.locationId,
+      'keterangan': instance.keterangan,
       'task_tool': instance.taskTool,
       'task_user': instance.taskUser,
-      'keterangan': instance.keterangan,
       'mentor': instance.mentor,
       'location': instance.location,
     };

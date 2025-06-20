@@ -102,7 +102,7 @@ class _RootPageState extends State<RootPage> {
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.notifications,
+              Icons.person,
               color: Colors.white,
             ),
             tooltip: 'Profile',

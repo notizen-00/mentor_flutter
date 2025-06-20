@@ -37,8 +37,7 @@ class LogbookFormDrawer extends StatefulWidget {
 class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
   final TextEditingController _namaTaskController = TextEditingController();
   final TextEditingController _keteranganController = TextEditingController();
-
-  File? _imageFile;
+  final List<TextEditingController> _progressControllers = [];
 
   int? _selectedMentorId;
   List<Location> _mentors = [];
@@ -94,6 +93,8 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
   void initState() {
     super.initState();
     fetchMentors();
+
+    _progressControllers.add(TextEditingController());
   }
 
   @override
@@ -162,6 +163,22 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
                   ),
                   maxLines: 2,
                 ),
+                const SizedBox(height: 16),
+                Text(
+                  'Progress Task',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 8),
+                ..._buildProgressFields(),
+                TextButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      _progressControllers.add(TextEditingController());
+                    });
+                  },
+                  icon: const Icon(Icons.add),
+                  label: const Text('Tambah Progress'),
+                ),
                 const SizedBox(height: 12),
                 const SizedBox(height: 20),
                 ElevatedButton(
@@ -179,5 +196,37 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildProgressFields() {
+    return List.generate(_progressControllers.length, (index) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _progressControllers[index],
+                decoration: InputDecoration(
+                  labelText: 'Progress ${index + 1}',
+                  border: const OutlineInputBorder(),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            if (_progressControllers.length > 1)
+              IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: () {
+                  setState(() {
+                    _progressControllers[index].dispose();
+                    _progressControllers.removeAt(index);
+                  });
+                },
+              ),
+          ],
+        ),
+      );
+    });
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 import 'package:internship_app/core/const/constanst.dart';
 import 'package:internship_app/core/utils/logbook_manager.dart';
 import 'package:internship_app/core/utils/token_manager.dart';

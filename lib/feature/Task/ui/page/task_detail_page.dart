@@ -120,8 +120,8 @@ class TaskDetailPage extends StatelessWidget {
 
                     const SizedBox(height: 16),
 
-                    const Icon(Icons.chat),
-                    const Text('Task Chat',
+                    const Icon(Icons.area_chart_sharp),
+                    const Text('Task Progress',
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     const Column(
@@ -183,7 +183,8 @@ class TaskDetailPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.error_outline, color: Colors.red, size: 48),
+                    const Icon(Icons.error_outline,
+                        color: Colors.red, size: 48),
                     const SizedBox(height: 16),
                     Text(
                       state.message,
