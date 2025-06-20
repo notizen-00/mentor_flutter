@@ -12,12 +12,14 @@ import 'package:internship_app/feature/Absensi/ui/widget/map_widget.dart';
 import 'package:internship_app/feature/Dashboard/ui/page/dashboard_page.dart';
 import 'package:internship_app/feature/Informasi/ui/page/informasi_page.dart';
 import 'package:internship_app/feature/Informasi/ui/widget/informasi_card.dart';
+import 'package:internship_app/feature/Logbook/bloc/logbook_bloc.dart';
 import 'package:internship_app/feature/Logbook/ui/page/logbook_page.dart';
 import 'package:internship_app/feature/Logbook/ui/screen/logbook_create.dart';
 import 'package:internship_app/feature/Logbook/ui/widget/logbook_info.dart';
 import 'package:internship_app/feature/Siswa/bloc/siswa_bloc.dart';
 import 'package:internship_app/feature/Siswa/ui/page/profile_page.dart';
 import 'package:internship_app/feature/Siswa/ui/page/siswa_page.dart';
+import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
 import 'package:internship_app/feature/Task/ui/page/task_page.dart';
 import 'package:internship_app/feature/Task/ui/widget/task_info.dart';
 
@@ -317,6 +319,7 @@ class _RootPageState extends State<RootPage> {
         );
 
       case 2:
+        context.read<LogbookBloc>().add(LoadCurrentLogbook());
         return const Padding(
           padding: EdgeInsets.only(top: 20),
           key: ValueKey('logbook'),
@@ -325,6 +328,7 @@ class _RootPageState extends State<RootPage> {
           ),
         );
       case 3:
+        context.read<TaskBloc>().add(LoadCurrentTask());
         return const Padding(
           padding: EdgeInsets.only(top: 20),
           key: ValueKey('task'),

@@ -9,7 +9,7 @@ import 'package:internship_app/core/utils/token_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 Future<void> connectToPusher() async {
-  const reverbHost = '10.10.10.171';
+  const reverbHost = '10.10.10.194';
   const reverbAppKey = 'wxchwyrzgjxjax9qvx5a';
   const wsUrl = 'ws://$reverbHost:8080/app/$reverbAppKey';
   const broadcastAuthUrl = 'http://$reverbHost/api/broadcasting/auth';

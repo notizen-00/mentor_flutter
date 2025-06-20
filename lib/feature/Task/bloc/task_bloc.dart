@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:internship_app/core/services/websocket_services.dart';
@@ -20,6 +22,16 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     on<ConnectToTaskChannels>(_onConnectToTaskChannels);
     on<LoadDetailTask>(_onLoadDetailTask);
     on<ReceivedTaskMessage>(_onReceivedTaskMessage);
+  }
+
+  void _onReceivedTaskMessage(
+    ReceivedTaskMessage event,
+    Emitter<TaskState> emit,
+  ) async {
+    log('test nooo');
+    await showNotification('Task: ${event.title}', event.message);
+
+    add(LoadCurrentTask());
   }
 
   Future<void> _onCreateTask(
@@ -47,20 +59,25 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     ConnectToTaskChannels event,
     Emitter<TaskState> emit,
   ) async {
+    emit(TaskLoading());
     await webSocketService.connectPresenceChannel(
       roomId: event.roomId,
-      onMessage: (data) {
+      onMessage: (data) async {
         add(ReceivedTaskMessage(
           sender: data['sender'] ?? 'Anonim',
           message: data['message'] ?? '',
           title: data['title'] ?? '',
         ));
+
+        add(LoadCurrentTask());
       },
-      onJoin: (name) {
+      onJoin: (name) async {
         add(UserJoinedRoom(name));
+        add(LoadCurrentTask());
       },
-      onLeave: (name) {
+      onLeave: (name) async {
         add(UserLeftRoom(name));
+        add(LoadCurrentTask());
       },
     );
   }
@@ -89,12 +106,5 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     } catch (e) {
       emit(TaskError(e.toString()));
     }
-  }
-
-  void _onReceivedTaskMessage(
-    ReceivedTaskMessage event,
-    Emitter<TaskState> emit,
-  ) async {
-    showNotification('Task : ${event.title}', event.message);
   }
 }

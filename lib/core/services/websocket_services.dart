@@ -9,7 +9,7 @@ import 'package:internship_app/core/services/service_locator.dart';
 import 'package:internship_app/core/utils/siswa_manager.dart';
 import 'package:internship_app/core/utils/token_manager.dart';
 
-typedef OnMessageCallback = void Function(Map<String, dynamic> data);
+typedef OnMessageCallback = Future<void> Function(Map<String, dynamic> data);
 typedef OnJoinCallback = void Function(String name);
 typedef OnLeaveCallback = void Function(String name);
 
@@ -25,7 +25,7 @@ class WebSocketService {
     required OnJoinCallback onJoin,
     required OnLeaveCallback onLeave,
   }) async {
-    const host = '10.10.10.171';
+    const host = '10.10.10.194';
     const appKey = 'wxchwyrzgjxjax9qvx5a';
     const authUrl = 'http://$host/api/broadcasting/auth';
 
@@ -95,18 +95,19 @@ class WebSocketService {
               }
               break;
 
-            case 'pusher:member_added':
+            case 'pusher-internal:member_added':
               if (data != null) {
                 final user = jsonDecode(data);
-                onJoin(user['name'] ?? 'Unknown');
+                onJoin(user['user_id'] ?? 'Unknown');
               }
               break;
 
-            case 'pusher:member_removed':
+            case 'pusher-internal:member_removed':
               if (data != null) {
                 final user = jsonDecode(data);
+                log(data);
                 await showNotification('test', 'member leaved');
-                onLeave(user['name'] ?? 'Unknown');
+                onLeave(user['user_id'] ?? 'Unknown');
               }
               break;
 
