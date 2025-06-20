@@ -36,6 +36,7 @@ mixin _$TaskModel {
   List<TaskTool> get taskTool => throw _privateConstructorUsedError;
   @JsonKey(name: 'task_user')
   List<TaskUser>? get taskUser => throw _privateConstructorUsedError;
+  String? get keterangan => throw _privateConstructorUsedError;
   Mentor get mentor => throw _privateConstructorUsedError;
   Location get location => throw _privateConstructorUsedError;
 
@@ -60,6 +61,7 @@ abstract class $TaskModelCopyWith<$Res> {
       @JsonKey(name: 'location_id') int locationId,
       @JsonKey(name: 'task_tool') List<TaskTool> taskTool,
       @JsonKey(name: 'task_user') List<TaskUser>? taskUser,
+      String? keterangan,
       Mentor mentor,
       Location location});
 
@@ -89,6 +91,7 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
     Object? locationId = null,
     Object? taskTool = null,
     Object? taskUser = freezed,
+    Object? keterangan = freezed,
     Object? mentor = null,
     Object? location = null,
   }) {
@@ -129,6 +132,10 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
           ? _value.taskUser
           : taskUser // ignore: cast_nullable_to_non_nullable
               as List<TaskUser>?,
+      keterangan: freezed == keterangan
+          ? _value.keterangan
+          : keterangan // ignore: cast_nullable_to_non_nullable
+              as String?,
       mentor: null == mentor
           ? _value.mentor
           : mentor // ignore: cast_nullable_to_non_nullable
@@ -175,6 +182,7 @@ abstract class _$$TaskModelImplCopyWith<$Res>
       @JsonKey(name: 'location_id') int locationId,
       @JsonKey(name: 'task_tool') List<TaskTool> taskTool,
       @JsonKey(name: 'task_user') List<TaskUser>? taskUser,
+      String? keterangan,
       Mentor mentor,
       Location location});
 
@@ -204,6 +212,7 @@ class __$$TaskModelImplCopyWithImpl<$Res>
     Object? locationId = null,
     Object? taskTool = null,
     Object? taskUser = freezed,
+    Object? keterangan = freezed,
     Object? mentor = null,
     Object? location = null,
   }) {
@@ -244,6 +253,10 @@ class __$$TaskModelImplCopyWithImpl<$Res>
           ? _value._taskUser
           : taskUser // ignore: cast_nullable_to_non_nullable
               as List<TaskUser>?,
+      keterangan: freezed == keterangan
+          ? _value.keterangan
+          : keterangan // ignore: cast_nullable_to_non_nullable
+              as String?,
       mentor: null == mentor
           ? _value.mentor
           : mentor // ignore: cast_nullable_to_non_nullable
@@ -269,6 +282,7 @@ class _$TaskModelImpl implements _TaskModel {
       @JsonKey(name: 'location_id') required this.locationId,
       @JsonKey(name: 'task_tool') required final List<TaskTool> taskTool,
       @JsonKey(name: 'task_user') final List<TaskUser>? taskUser,
+      this.keterangan,
       required this.mentor,
       required this.location})
       : _taskTool = taskTool,
@@ -317,13 +331,15 @@ class _$TaskModelImpl implements _TaskModel {
   }
 
   @override
+  final String? keterangan;
+  @override
   final Mentor mentor;
   @override
   final Location location;
 
   @override
   String toString() {
-    return 'TaskModel(id: $id, mentorId: $mentorId, namaTask: $namaTask, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, locationId: $locationId, taskTool: $taskTool, taskUser: $taskUser, mentor: $mentor, location: $location)';
+    return 'TaskModel(id: $id, mentorId: $mentorId, namaTask: $namaTask, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, locationId: $locationId, taskTool: $taskTool, taskUser: $taskUser, keterangan: $keterangan, mentor: $mentor, location: $location)';
   }
 
   @override
@@ -345,6 +361,8 @@ class _$TaskModelImpl implements _TaskModel {
                 other.locationId == locationId) &&
             const DeepCollectionEquality().equals(other._taskTool, _taskTool) &&
             const DeepCollectionEquality().equals(other._taskUser, _taskUser) &&
+            (identical(other.keterangan, keterangan) ||
+                other.keterangan == keterangan) &&
             (identical(other.mentor, mentor) || other.mentor == mentor) &&
             (identical(other.location, location) ||
                 other.location == location));
@@ -363,6 +381,7 @@ class _$TaskModelImpl implements _TaskModel {
       locationId,
       const DeepCollectionEquality().hash(_taskTool),
       const DeepCollectionEquality().hash(_taskUser),
+      keterangan,
       mentor,
       location);
 
@@ -391,6 +410,7 @@ abstract class _TaskModel implements TaskModel {
       @JsonKey(name: 'location_id') required final int locationId,
       @JsonKey(name: 'task_tool') required final List<TaskTool> taskTool,
       @JsonKey(name: 'task_user') final List<TaskUser>? taskUser,
+      final String? keterangan,
       required final Mentor mentor,
       required final Location location}) = _$TaskModelImpl;
 
@@ -422,6 +442,8 @@ abstract class _TaskModel implements TaskModel {
   @override
   @JsonKey(name: 'task_user')
   List<TaskUser>? get taskUser;
+  @override
+  String? get keterangan;
   @override
   Mentor get mentor;
   @override
@@ -1071,6 +1093,7 @@ mixin _$TaskUser {
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
+  User? get user => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1089,7 +1112,10 @@ abstract class $TaskUserCopyWith<$Res> {
       @JsonKey(name: 'user_id') int userId,
       int status,
       @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt});
+      @JsonKey(name: 'updated_at') DateTime updatedAt,
+      User? user});
+
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -1111,6 +1137,7 @@ class _$TaskUserCopyWithImpl<$Res, $Val extends TaskUser>
     Object? status = null,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? user = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -1137,7 +1164,23 @@ class _$TaskUserCopyWithImpl<$Res, $Val extends TaskUser>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $UserCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 }
 
@@ -1155,7 +1198,11 @@ abstract class _$$TaskUserImplCopyWith<$Res>
       @JsonKey(name: 'user_id') int userId,
       int status,
       @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt});
+      @JsonKey(name: 'updated_at') DateTime updatedAt,
+      User? user});
+
+  @override
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -1175,6 +1222,7 @@ class __$$TaskUserImplCopyWithImpl<$Res>
     Object? status = null,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? user = freezed,
   }) {
     return _then(_$TaskUserImpl(
       id: null == id
@@ -1201,6 +1249,10 @@ class __$$TaskUserImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
     ));
   }
 }
@@ -1214,7 +1266,8 @@ class _$TaskUserImpl implements _TaskUser {
       @JsonKey(name: 'user_id') required this.userId,
       required this.status,
       @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'updated_at') required this.updatedAt});
+      @JsonKey(name: 'updated_at') required this.updatedAt,
+      this.user});
 
   factory _$TaskUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskUserImplFromJson(json);
@@ -1235,10 +1288,12 @@ class _$TaskUserImpl implements _TaskUser {
   @override
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
+  @override
+  final User? user;
 
   @override
   String toString() {
-    return 'TaskUser(id: $id, taskId: $taskId, userId: $userId, status: $status, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'TaskUser(id: $id, taskId: $taskId, userId: $userId, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, user: $user)';
   }
 
   @override
@@ -1253,13 +1308,14 @@ class _$TaskUserImpl implements _TaskUser {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+                other.updatedAt == updatedAt) &&
+            (identical(other.user, user) || other.user == user));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, taskId, userId, status, createdAt, updatedAt);
+      runtimeType, id, taskId, userId, status, createdAt, updatedAt, user);
 
   @JsonKey(ignore: true)
   @override
@@ -1277,13 +1333,13 @@ class _$TaskUserImpl implements _TaskUser {
 
 abstract class _TaskUser implements TaskUser {
   const factory _TaskUser(
-          {required final int id,
-          @JsonKey(name: 'task_id') required final int taskId,
-          @JsonKey(name: 'user_id') required final int userId,
-          required final int status,
-          @JsonKey(name: 'created_at') required final DateTime createdAt,
-          @JsonKey(name: 'updated_at') required final DateTime updatedAt}) =
-      _$TaskUserImpl;
+      {required final int id,
+      @JsonKey(name: 'task_id') required final int taskId,
+      @JsonKey(name: 'user_id') required final int userId,
+      required final int status,
+      @JsonKey(name: 'created_at') required final DateTime createdAt,
+      @JsonKey(name: 'updated_at') required final DateTime updatedAt,
+      final User? user}) = _$TaskUserImpl;
 
   factory _TaskUser.fromJson(Map<String, dynamic> json) =
       _$TaskUserImpl.fromJson;
@@ -1304,6 +1360,8 @@ abstract class _TaskUser implements TaskUser {
   @override
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt;
+  @override
+  User? get user;
   @override
   @JsonKey(ignore: true)
   _$$TaskUserImplCopyWith<_$TaskUserImpl> get copyWith =>

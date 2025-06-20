@@ -13,7 +13,7 @@ class TaskRepository {
 
   TaskRepository(this._tokenManager);
 
-  Future<String> create(
+  Future<TaskModel?> create(
     int locationId,
     String namaTask,
     String keterangan,
@@ -37,7 +37,10 @@ class TaskRepository {
       log('Response Body: ${response.body}');
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        return 'sukses';
+        final body = jsonDecode(response.body);
+        final isi = body['data'];
+
+        return TaskModel.fromJson(isi);
       } else {
         final error = jsonDecode(response.body);
         log('Gagal simpan: $error', name: 'TaskRepository');

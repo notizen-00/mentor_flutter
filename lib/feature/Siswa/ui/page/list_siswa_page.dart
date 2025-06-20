@@ -36,7 +36,7 @@ class ListSiswaPage extends StatelessWidget {
               color: AppColors.primary.withOpacity(0.1),
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: ListWheelScrollView.useDelegate(
-                itemExtent: 220,
+                itemExtent: 250,
                 controller: scrollController,
                 physics: const FixedExtentScrollPhysics(),
                 perspective: 0.003,
@@ -59,7 +59,8 @@ class ListSiswaPage extends StatelessWidget {
                         ),
                         margin: const EdgeInsets.symmetric(horizontal: 8),
                         child: Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
@@ -115,6 +116,26 @@ class ListSiswaPage extends StatelessWidget {
                                 style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.white70,
+                                ),
+                              ),
+                              Positioned(
+                                top: 8,
+                                right: 8,
+                                child: Chip(
+                                  avatar: Icon(
+                                    siswa.status != 0
+                                        ? Icons.check_circle
+                                        : Icons.work,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
+                                  label: Text(
+                                    siswa.status == 0 ? 'On Task' : 'Nganggur',
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  backgroundColor: siswa.status != 0
+                                      ? Colors.green
+                                      : Colors.orange,
                                 ),
                               ),
                             ],

@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internship_app/core/const/constanst.dart';
 import 'package:internship_app/core/utils/toast_utils.dart';
 import 'package:internship_app/feature/Task/ui/page/task_detail_page.dart';
+import 'package:internship_app/feature/Task/ui/widget/task_setting.dart';
 import 'package:intl/intl.dart';
 import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
 
@@ -113,13 +115,50 @@ class _TaskPageState extends State<TaskPage>
                                     final task = filteredTasks[index];
 
                                     return Container(
-                                      margin: const EdgeInsets.only(bottom: 12),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(color: Colors.blue),
-                                      ),
-                                      child: ListTile(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 12),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border:
+                                              Border.all(color: Colors.blue),
+                                        ),
+                                        child: ListTile(
+                                          leading: IconButton(
+                                            icon: const Icon(Icons.settings),
+                                            onPressed: () {
+                                              TaskSetting.show(
+                                                context,
+                                                child: SizedBox(
+                                                  width: double.infinity,
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      const Text(
+                                                        'Ini konten bottom sheet',
+                                                        style: TextStyle(
+                                                            fontSize: 16),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 16),
+                                                      ElevatedButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context),
+                                                        child:
+                                                            const Text('Tutup'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                           iconColor: Colors.blueAccent,
                                           contentPadding:
                                               const EdgeInsets.symmetric(
@@ -160,16 +199,107 @@ class _TaskPageState extends State<TaskPage>
                                               ),
                                               const SizedBox(height: 4),
                                               Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  const Icon(Icons.person,
-                                                      size: 16,
-                                                      color: Colors.grey),
-                                                  const SizedBox(width: 4),
-                                                  Text(
-                                                    task.mentor.name,
-                                                    style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.grey,
+                                                  Row(
+                                                    children: [
+                                                      const Icon(Icons.person,
+                                                          size: 16,
+                                                          color: Colors.grey),
+                                                      const SizedBox(width: 4),
+                                                      Text(
+                                                        task.mentor.name,
+                                                        style: const TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    width: 90,
+                                                    height:
+                                                        27, // tambahkan tinggi
+                                                    child: Stack(
+                                                      clipBehavior: Clip.none,
+                                                      children: List.generate(
+                                                          task.taskUser
+                                                                  ?.length ??
+                                                              0, (i) {
+                                                        final user = task
+                                                            .taskUser![i].user;
+
+                                                        final pictureUrl =
+                                                            '${AppConstants.baseStorage}/${user?.picture}';
+                                                        final nameInitial = user
+                                                                ?.name
+                                                                .substring(0, 1)
+                                                                .toUpperCase() ??
+                                                            '?';
+
+                                                        return Positioned(
+                                                          left: i * 35.0,
+                                                          child: CircleAvatar(
+                                                            radius: 16,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            child: pictureUrl
+                                                                    .isNotEmpty
+                                                                ? ClipOval(
+                                                                    child: Image
+                                                                        .network(
+                                                                      pictureUrl,
+                                                                      width: 32,
+                                                                      height:
+                                                                          32,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                      errorBuilder: (context,
+                                                                          error,
+                                                                          stackTrace) {
+                                                                        // Fallback ke inisial jika error
+                                                                        return CircleAvatar(
+                                                                          radius:
+                                                                              16,
+                                                                          backgroundColor: Colors
+                                                                              .blue
+                                                                              .shade200,
+                                                                          child:
+                                                                              Text(
+                                                                            nameInitial,
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontSize: 12,
+                                                                              color: Colors.white,
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  )
+                                                                : CircleAvatar(
+                                                                    radius: 16,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .blue
+                                                                            .shade200,
+                                                                    child: Text(
+                                                                      nameInitial,
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                          ),
+                                                        );
+                                                      }),
                                                     ),
                                                   ),
                                                 ],
@@ -178,11 +308,18 @@ class _TaskPageState extends State<TaskPage>
                                           ),
                                           trailing:
                                               const Icon(Icons.chevron_right),
-                                          onTap: () => Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const TaskDetailPage()))),
-                                    );
+                                          onTap: () {
+                                            context
+                                                .read<TaskBloc>()
+                                                .add(LoadDetailTask(task));
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const TaskDetailPage(),
+                                              ),
+                                            );
+                                          },
+                                        ));
                                   },
                                 ),
                         ],

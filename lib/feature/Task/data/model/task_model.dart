@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:internship_app/feature/Logbook/data/model/logbook_model.dart';
 
 part 'task_model.freezed.dart';
 part 'task_model.g.dart';
@@ -13,6 +14,7 @@ class TaskModel with _$TaskModel {
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
     @JsonKey(name: 'location_id') required int locationId,
+    String? keterangan,
     @JsonKey(name: 'task_tool') required List<TaskTool> taskTool,
     @JsonKey(name: 'task_user') List<TaskUser>? taskUser,
     required Mentor mentor,
@@ -66,6 +68,7 @@ class TaskUser with _$TaskUser {
     required int status,
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
+    User? user,
   }) = _TaskUser;
 
   factory TaskUser.fromJson(Map<String, dynamic> json) =>

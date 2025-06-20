@@ -18,3 +18,28 @@ class TaskError extends TaskState {
 
   TaskError(this.message);
 }
+
+class DetailTaskLoaded extends TaskState {
+  final TaskModel task;
+
+  DetailTaskLoaded(this.task);
+}
+
+class JoinTaskSuccess extends TaskState {
+  final String message;
+
+  JoinTaskSuccess(this.message);
+}
+
+class JoinTaskFailure extends TaskState {
+  final String message;
+
+  JoinTaskFailure(this.message);
+}
+
+class TaskMessageReceived extends TaskState {
+  final String sender;
+  final String message;
+  final String title;
+  TaskMessageReceived(this.sender, this.message, this.title);
+}

@@ -21,6 +21,7 @@ _$TaskModelImpl _$$TaskModelImplFromJson(Map<String, dynamic> json) =>
       taskUser: (json['task_user'] as List<dynamic>?)
           ?.map((e) => TaskUser.fromJson(e as Map<String, dynamic>))
           .toList(),
+      keterangan: json['keterangan'] as String?,
       mentor: Mentor.fromJson(json['mentor'] as Map<String, dynamic>),
       location: Location.fromJson(json['location'] as Map<String, dynamic>),
     );
@@ -36,6 +37,7 @@ Map<String, dynamic> _$$TaskModelImplToJson(_$TaskModelImpl instance) =>
       'location_id': instance.locationId,
       'task_tool': instance.taskTool,
       'task_user': instance.taskUser,
+      'keterangan': instance.keterangan,
       'mentor': instance.mentor,
       'location': instance.location,
     };
@@ -97,6 +99,9 @@ _$TaskUserImpl _$$TaskUserImplFromJson(Map<String, dynamic> json) =>
       status: (json['status'] as num).toInt(),
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
+      user: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$TaskUserImplToJson(_$TaskUserImpl instance) =>
@@ -107,6 +112,7 @@ Map<String, dynamic> _$$TaskUserImplToJson(_$TaskUserImpl instance) =>
       'status': instance.status,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
+      'user': instance.user,
     };
 
 _$MentorImpl _$$MentorImplFromJson(Map<String, dynamic> json) => _$MentorImpl(

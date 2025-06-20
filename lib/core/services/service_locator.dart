@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internship_app/core/common/cubits/app_user/app_user_cubit.dart';
+import 'package:internship_app/core/services/websocket_services.dart';
 import 'package:internship_app/core/utils/absensi_manager.dart';
 import 'package:internship_app/core/utils/logbook_manager.dart';
 import 'package:internship_app/core/utils/siswa_manager.dart';
@@ -82,7 +83,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => InformasiRepository(sl()));
   sl.registerLazySingleton(() => TaskRepository(sl()));
   sl.registerLazySingleton(() => AbsensiRepository(sl(), sl()));
-
+  sl.registerLazySingleton<WebSocketService>(() => WebSocketService());
   // Cubit
   sl.registerLazySingleton(() => AppUserCubit(sl()));
 
@@ -103,6 +104,7 @@ Future<void> init() async {
       ));
   sl.registerFactory(() => TaskBloc(
         taskRepository: sl(),
+        webSocketService: sl(),
       ));
   sl.registerFactory(() => AuthBloc(
         authRepository: sl(),
