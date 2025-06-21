@@ -24,3 +24,15 @@ class VerifikasiTool extends ToolEvent {
 }
 
 class LoadCurrentTool extends ToolEvent {}
+
+class LoadDetailTool extends ToolEvent {
+  final int toolId;
+
+  LoadDetailTool({required this.toolId});
+}
+
+class BringBackTool extends ToolEvent {
+  final int toolId;
+
+  BringBackTool({required this.toolId});
+}

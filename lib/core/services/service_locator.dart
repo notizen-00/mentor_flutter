@@ -18,6 +18,8 @@ import 'package:internship_app/feature/Siswa/bloc/siswa_bloc.dart';
 import 'package:internship_app/feature/Siswa/data/repository/siswa_repository.dart';
 import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
 import 'package:internship_app/feature/Task/data/repository/task_repository.dart';
+import 'package:internship_app/feature/Tool/bloc/tool_bloc.dart';
+import 'package:internship_app/feature/Tool/data/repository/tool_repository.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:internship_app/feature/Auth/data/repository/auth_repository.dart';
@@ -82,6 +84,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LogbookRepository(sl(), sl()));
   sl.registerLazySingleton(() => InformasiRepository(sl()));
   sl.registerLazySingleton(() => TaskRepository(sl()));
+  sl.registerLazySingleton(() => ToolRepository(sl()));
   sl.registerLazySingleton(() => AbsensiRepository(sl(), sl()));
   sl.registerLazySingleton<WebSocketService>(() => WebSocketService());
   // Cubit
@@ -105,6 +108,9 @@ Future<void> init() async {
   sl.registerFactory(() => TaskBloc(
         taskRepository: sl(),
         webSocketService: sl(),
+      ));
+  sl.registerFactory(() => ToolBloc(
+        toolRepository: sl(),
       ));
   sl.registerFactory(() => AuthBloc(
         authRepository: sl(),

@@ -8,26 +8,50 @@ import 'package:internship_app/core/theme/app_colors.dart';
 import 'package:internship_app/core/utils/siswa_manager.dart';
 import 'package:internship_app/core/utils/toast_utils.dart';
 import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
+import 'package:internship_app/feature/Task/data/model/task_model.dart';
+import 'package:internship_app/feature/Task/ui/widget/task_schema.dart';
+import 'package:internship_app/feature/Task/ui/widget/task_tools.dart';
+import 'package:internship_app/feature/Tool/bloc/tool_bloc.dart';
 
 class TaskDetailPage extends StatelessWidget {
   const TaskDetailPage({super.key});
+  double _calculateProgress(List<TaskSchema> schemas) {
+    if (schemas.isEmpty) return 0.0;
+
+    final completed = schemas.where((e) => e.status == 1).length;
+    return completed / schemas.length;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TaskBloc, TaskState>(
-      listener: (context, state) {
-        if (state is JoinTaskSuccess) {
-          showSuccessToast(context, "Berhasil bergabung ke dalam task!");
-          context.read<TaskBloc>().add(LoadCurrentTask());
-          Navigator.pop(context);
-        } else if (state is JoinTaskFailure) {
-          showErrorToast(context, state.message);
-          context.read<TaskBloc>().add(LoadCurrentTask());
-          Navigator.pop(context);
-        } else if (state is TaskError) {
-          showErrorToast(context, state.message);
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<TaskBloc, TaskState>(
+          listener: (context, state) {
+            if (state is JoinTaskSuccess) {
+              showSuccessToast(context, "Berhasil bergabung ke dalam task!");
+              context.read<TaskBloc>().add(LoadCurrentTask());
+              Navigator.pop(context);
+            } else if (state is JoinTaskFailure) {
+              showErrorToast(context, state.message);
+              context.read<TaskBloc>().add(LoadCurrentTask());
+              Navigator.pop(context);
+            } else if (state is TaskError) {
+              showErrorToast(context, state.message);
+            }
+          },
+        ),
+        BlocListener<ToolBloc, ToolState>(
+          listener: (context, state) {
+            if (state is ToolBackSuccess) {
+              showSuccessToast(context, "Alat berhasil dikembalikan!");
+              context.read<TaskBloc>().add(LoadDetailTask(state.task));
+            } else if (state is ToolError) {
+              showErrorToast(context, state.message);
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -119,39 +143,69 @@ class TaskDetailPage extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 16),
-
-                    const Icon(Icons.area_chart_sharp),
-                    const Text('Task Progress',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    if (state.task.taskTool!.isNotEmpty)
+                      ListTile(
+                        tileColor: AppColors.primary,
+                        title: const Text(
+                          'Task Tools',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        subtitle: const Text(
+                          'mohon kalau pinjam di kembalikan !',
+                          style: TextStyle(color: Colors.white30),
+                        ),
+                        trailing: GestureDetector(
+                          child: const Icon(
+                            Icons.history,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 16),
+                    Column(
+                      children: [TaskTools(tools: state.task.taskTool!)],
+                    ),
+                    const SizedBox(height: 16),
+                    ListTile(
+                      tileColor: AppColors.primary,
+                      title: const Text(
+                        'Task Progress',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      subtitle: const Text(
+                        'mohon update progres secara berkala !',
+                        style: TextStyle(color: Colors.white30),
+                      ),
+                      trailing: GestureDetector(
+                        child: const Icon(
+                          Icons.history,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 8),
-                    const Column(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _ProgressItem(
-                            text: 'Frontend Design With Prototype',
-                            isDone: true),
-                        _ProgressItem(
-                            text: 'AWS EC2 Connection With Application',
-                            isDone: true),
-                        _ProgressItem(
-                            text: 'Database Creation And Connectivity',
-                            isDone: false),
-                        _ProgressItem(text: 'Testing Of API', isDone: false),
+                        TaskProgressList(schemas: state.task.taskSchema),
+                        const SizedBox(height: 8),
+                        LinearProgressIndicator(
+                          value: _calculateProgress(state.task.taskSchema),
+                          minHeight: 6,
+                          backgroundColor: Colors.grey[300],
+                          color: Colors.green,
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    const LinearProgressIndicator(
-                      value: 0.79,
-                      minHeight: 6,
-                      backgroundColor: Colors.grey,
-                      color: Colors.red,
-                    ),
+
                     const SizedBox(height: 8),
 
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today, size: 20),
+                        const Text('Persentase Progress : '),
                         const SizedBox(width: 8),
-                        const Text('Deadline: February 6, 2024'),
+                        Text(
+                            '${(_calculateProgress(state.task.taskSchema) * 100).toStringAsFixed(0)}%'),
                         const Spacer(),
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -160,21 +214,12 @@ class TaskDetailPage extends StatelessWidget {
                             color: Colors.red[100],
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: const Text('2 Days Left',
+                          child: const Text('Lorem Ipsum dulz',
                               style: TextStyle(color: Colors.red)),
                         )
                       ],
                     ),
                     const SizedBox(height: 16),
-
-                    const Text('Attachment',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 8),
-                    _attachmentTile('Development Description.Docx',
-                        Icons.insert_drive_file, Colors.blue),
-                    const SizedBox(height: 8),
-                    _attachmentTile('Prototype Details.pdf',
-                        Icons.picture_as_pdf, Colors.redAccent),
                   ],
                 ),
               );
@@ -291,25 +336,6 @@ class TaskDetailPage extends StatelessWidget {
         trailing: const Icon(Icons.download),
         onTap: () {},
       ),
-    );
-  }
-}
-
-class _ProgressItem extends StatelessWidget {
-  final String text;
-  final bool isDone;
-
-  const _ProgressItem({required this.text, required this.isDone});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      leading: Icon(
-        isDone ? Icons.check_circle : Icons.radio_button_unchecked,
-        color: isDone ? Colors.green : Colors.grey,
-      ),
-      title: Text(text),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:internship_app/feature/Logbook/data/model/logbook_model.dart';
+import 'package:internship_app/feature/Tool/data/model/tool_model.dart';
 
 part 'task_model.freezed.dart';
 part 'task_model.g.dart';
@@ -15,8 +16,9 @@ class TaskModel with _$TaskModel {
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
     @JsonKey(name: 'location_id') required int locationId,
     String? keterangan,
-    @JsonKey(name: 'task_tool') required List<TaskTool> taskTool,
+    @JsonKey(name: 'task_tool') List<TaskTool>? taskTool,
     @JsonKey(name: 'task_user') List<TaskUser>? taskUser,
+    @JsonKey(name: 'task_schema') required List<TaskSchema> taskSchema,
     required Mentor mentor,
     required Location location,
   }) = _TaskModel;
@@ -36,7 +38,7 @@ class TaskTool with _$TaskTool {
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
     @JsonKey(name: 'user_id') required int userId,
     required int qty,
-    required Tool tool,
+    ToolModel? tool,
   }) = _TaskTool;
 
   factory TaskTool.fromJson(Map<String, dynamic> json) =>
@@ -44,19 +46,18 @@ class TaskTool with _$TaskTool {
 }
 
 @freezed
-class Tool with _$Tool {
-  const factory Tool({
+class TaskSchema with _$TaskSchema {
+  const factory TaskSchema({
     required int id,
-    @JsonKey(name: 'nama_alat') required String namaAlat,
-    String? keterangan,
+    @JsonKey(name: 'task_id') required int taskId,
+    @JsonKey(name: 'nama_schema') required String namaSchema,
     required int status,
-    @JsonKey(name: 'foto_alat') String? fotoAlat,
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
-    int? qty,
-  }) = _Tool;
+  }) = _TaskSchema;
 
-  factory Tool.fromJson(Map<String, dynamic> json) => _$ToolFromJson(json);
+  factory TaskSchema.fromJson(Map<String, dynamic> json) =>
+      _$TaskSchemaFromJson(json);
 }
 
 @freezed
@@ -73,6 +74,21 @@ class TaskUser with _$TaskUser {
 
   factory TaskUser.fromJson(Map<String, dynamic> json) =>
       _$TaskUserFromJson(json);
+}
+
+@freezed
+class TaskCreateData with _$TaskCreateData {
+  const factory TaskCreateData({
+    required int locationId,
+    required String namaTask,
+    required String keterangan,
+    List<int>? toolIds,
+    List<int>? toolQuantities,
+    required List<String> progressList,
+  }) = _TaskCreateData;
+
+  factory TaskCreateData.fromJson(Map<String, dynamic> json) =>
+      _$TaskCreateDataFromJson(json);
 }
 
 @freezed

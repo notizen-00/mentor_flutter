@@ -4,14 +4,8 @@ part of 'task_bloc.dart';
 abstract class TaskEvent {}
 
 class CreateTask extends TaskEvent {
-  final int locationId;
-  final String namaTask;
-  final String keterangan;
-
-  CreateTask(
-      {required this.locationId,
-      required this.namaTask,
-      required this.keterangan});
+  final TaskCreateData task;
+  CreateTask({required this.task});
 }
 
 class LoadCurrentTask extends TaskEvent {}

@@ -40,8 +40,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   ) async {
     emit(TaskLoading());
     try {
-      final TaskModel? task = await taskRepository.create(
-          event.locationId, event.namaTask, event.keterangan);
+      final TaskModel? task = await taskRepository.create(event.task);
 
       if (task != null) {
         final List<TaskModel> tasks = await taskRepository.getCurrentTask();

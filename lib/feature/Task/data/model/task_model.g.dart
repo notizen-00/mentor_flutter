@@ -16,11 +16,14 @@ _$TaskModelImpl _$$TaskModelImplFromJson(Map<String, dynamic> json) =>
       updatedAt: DateTime.parse(json['updated_at'] as String),
       locationId: (json['location_id'] as num).toInt(),
       keterangan: json['keterangan'] as String?,
-      taskTool: (json['task_tool'] as List<dynamic>)
-          .map((e) => TaskTool.fromJson(e as Map<String, dynamic>))
+      taskTool: (json['task_tool'] as List<dynamic>?)
+          ?.map((e) => TaskTool.fromJson(e as Map<String, dynamic>))
           .toList(),
       taskUser: (json['task_user'] as List<dynamic>?)
           ?.map((e) => TaskUser.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      taskSchema: (json['task_schema'] as List<dynamic>)
+          .map((e) => TaskSchema.fromJson(e as Map<String, dynamic>))
           .toList(),
       mentor: Mentor.fromJson(json['mentor'] as Map<String, dynamic>),
       location: Location.fromJson(json['location'] as Map<String, dynamic>),
@@ -38,6 +41,7 @@ Map<String, dynamic> _$$TaskModelImplToJson(_$TaskModelImpl instance) =>
       'keterangan': instance.keterangan,
       'task_tool': instance.taskTool,
       'task_user': instance.taskUser,
+      'task_schema': instance.taskSchema,
       'mentor': instance.mentor,
       'location': instance.location,
     };
@@ -52,7 +56,9 @@ _$TaskToolImpl _$$TaskToolImplFromJson(Map<String, dynamic> json) =>
       updatedAt: DateTime.parse(json['updated_at'] as String),
       userId: (json['user_id'] as num).toInt(),
       qty: (json['qty'] as num).toInt(),
-      tool: Tool.fromJson(json['tool'] as Map<String, dynamic>),
+      tool: json['tool'] == null
+          ? null
+          : ToolModel.fromJson(json['tool'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$TaskToolImplToJson(_$TaskToolImpl instance) =>
@@ -68,27 +74,24 @@ Map<String, dynamic> _$$TaskToolImplToJson(_$TaskToolImpl instance) =>
       'tool': instance.tool,
     };
 
-_$ToolImpl _$$ToolImplFromJson(Map<String, dynamic> json) => _$ToolImpl(
+_$TaskSchemaImpl _$$TaskSchemaImplFromJson(Map<String, dynamic> json) =>
+    _$TaskSchemaImpl(
       id: (json['id'] as num).toInt(),
-      namaAlat: json['nama_alat'] as String,
-      keterangan: json['keterangan'] as String?,
+      taskId: (json['task_id'] as num).toInt(),
+      namaSchema: json['nama_schema'] as String,
       status: (json['status'] as num).toInt(),
-      fotoAlat: json['foto_alat'] as String?,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
-      qty: (json['qty'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$$ToolImplToJson(_$ToolImpl instance) =>
+Map<String, dynamic> _$$TaskSchemaImplToJson(_$TaskSchemaImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'nama_alat': instance.namaAlat,
-      'keterangan': instance.keterangan,
+      'task_id': instance.taskId,
+      'nama_schema': instance.namaSchema,
       'status': instance.status,
-      'foto_alat': instance.fotoAlat,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
-      'qty': instance.qty,
     };
 
 _$TaskUserImpl _$$TaskUserImplFromJson(Map<String, dynamic> json) =>
@@ -113,6 +116,33 @@ Map<String, dynamic> _$$TaskUserImplToJson(_$TaskUserImpl instance) =>
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
       'user': instance.user,
+    };
+
+_$TaskCreateDataImpl _$$TaskCreateDataImplFromJson(Map<String, dynamic> json) =>
+    _$TaskCreateDataImpl(
+      locationId: (json['locationId'] as num).toInt(),
+      namaTask: json['namaTask'] as String,
+      keterangan: json['keterangan'] as String,
+      toolIds: (json['toolIds'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
+      toolQuantities: (json['toolQuantities'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
+      progressList: (json['progressList'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$$TaskCreateDataImplToJson(
+        _$TaskCreateDataImpl instance) =>
+    <String, dynamic>{
+      'locationId': instance.locationId,
+      'namaTask': instance.namaTask,
+      'keterangan': instance.keterangan,
+      'toolIds': instance.toolIds,
+      'toolQuantities': instance.toolQuantities,
+      'progressList': instance.progressList,
     };
 
 _$MentorImpl _$$MentorImplFromJson(Map<String, dynamic> json) => _$MentorImpl(

@@ -34,9 +34,11 @@ mixin _$TaskModel {
   int get locationId => throw _privateConstructorUsedError;
   String? get keterangan => throw _privateConstructorUsedError;
   @JsonKey(name: 'task_tool')
-  List<TaskTool> get taskTool => throw _privateConstructorUsedError;
+  List<TaskTool>? get taskTool => throw _privateConstructorUsedError;
   @JsonKey(name: 'task_user')
   List<TaskUser>? get taskUser => throw _privateConstructorUsedError;
+  @JsonKey(name: 'task_schema')
+  List<TaskSchema> get taskSchema => throw _privateConstructorUsedError;
   Mentor get mentor => throw _privateConstructorUsedError;
   Location get location => throw _privateConstructorUsedError;
 
@@ -60,8 +62,9 @@ abstract class $TaskModelCopyWith<$Res> {
       @JsonKey(name: 'updated_at') DateTime updatedAt,
       @JsonKey(name: 'location_id') int locationId,
       String? keterangan,
-      @JsonKey(name: 'task_tool') List<TaskTool> taskTool,
+      @JsonKey(name: 'task_tool') List<TaskTool>? taskTool,
       @JsonKey(name: 'task_user') List<TaskUser>? taskUser,
+      @JsonKey(name: 'task_schema') List<TaskSchema> taskSchema,
       Mentor mentor,
       Location location});
 
@@ -90,8 +93,9 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
     Object? updatedAt = null,
     Object? locationId = null,
     Object? keterangan = freezed,
-    Object? taskTool = null,
+    Object? taskTool = freezed,
     Object? taskUser = freezed,
+    Object? taskSchema = null,
     Object? mentor = null,
     Object? location = null,
   }) {
@@ -128,14 +132,18 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
           ? _value.keterangan
           : keterangan // ignore: cast_nullable_to_non_nullable
               as String?,
-      taskTool: null == taskTool
+      taskTool: freezed == taskTool
           ? _value.taskTool
           : taskTool // ignore: cast_nullable_to_non_nullable
-              as List<TaskTool>,
+              as List<TaskTool>?,
       taskUser: freezed == taskUser
           ? _value.taskUser
           : taskUser // ignore: cast_nullable_to_non_nullable
               as List<TaskUser>?,
+      taskSchema: null == taskSchema
+          ? _value.taskSchema
+          : taskSchema // ignore: cast_nullable_to_non_nullable
+              as List<TaskSchema>,
       mentor: null == mentor
           ? _value.mentor
           : mentor // ignore: cast_nullable_to_non_nullable
@@ -181,8 +189,9 @@ abstract class _$$TaskModelImplCopyWith<$Res>
       @JsonKey(name: 'updated_at') DateTime updatedAt,
       @JsonKey(name: 'location_id') int locationId,
       String? keterangan,
-      @JsonKey(name: 'task_tool') List<TaskTool> taskTool,
+      @JsonKey(name: 'task_tool') List<TaskTool>? taskTool,
       @JsonKey(name: 'task_user') List<TaskUser>? taskUser,
+      @JsonKey(name: 'task_schema') List<TaskSchema> taskSchema,
       Mentor mentor,
       Location location});
 
@@ -211,8 +220,9 @@ class __$$TaskModelImplCopyWithImpl<$Res>
     Object? updatedAt = null,
     Object? locationId = null,
     Object? keterangan = freezed,
-    Object? taskTool = null,
+    Object? taskTool = freezed,
     Object? taskUser = freezed,
+    Object? taskSchema = null,
     Object? mentor = null,
     Object? location = null,
   }) {
@@ -249,14 +259,18 @@ class __$$TaskModelImplCopyWithImpl<$Res>
           ? _value.keterangan
           : keterangan // ignore: cast_nullable_to_non_nullable
               as String?,
-      taskTool: null == taskTool
+      taskTool: freezed == taskTool
           ? _value._taskTool
           : taskTool // ignore: cast_nullable_to_non_nullable
-              as List<TaskTool>,
+              as List<TaskTool>?,
       taskUser: freezed == taskUser
           ? _value._taskUser
           : taskUser // ignore: cast_nullable_to_non_nullable
               as List<TaskUser>?,
+      taskSchema: null == taskSchema
+          ? _value._taskSchema
+          : taskSchema // ignore: cast_nullable_to_non_nullable
+              as List<TaskSchema>,
       mentor: null == mentor
           ? _value.mentor
           : mentor // ignore: cast_nullable_to_non_nullable
@@ -281,12 +295,14 @@ class _$TaskModelImpl implements _TaskModel {
       @JsonKey(name: 'updated_at') required this.updatedAt,
       @JsonKey(name: 'location_id') required this.locationId,
       this.keterangan,
-      @JsonKey(name: 'task_tool') required final List<TaskTool> taskTool,
+      @JsonKey(name: 'task_tool') final List<TaskTool>? taskTool,
       @JsonKey(name: 'task_user') final List<TaskUser>? taskUser,
+      @JsonKey(name: 'task_schema') required final List<TaskSchema> taskSchema,
       required this.mentor,
       required this.location})
       : _taskTool = taskTool,
-        _taskUser = taskUser;
+        _taskUser = taskUser,
+        _taskSchema = taskSchema;
 
   factory _$TaskModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskModelImplFromJson(json);
@@ -312,13 +328,15 @@ class _$TaskModelImpl implements _TaskModel {
   final int locationId;
   @override
   final String? keterangan;
-  final List<TaskTool> _taskTool;
+  final List<TaskTool>? _taskTool;
   @override
   @JsonKey(name: 'task_tool')
-  List<TaskTool> get taskTool {
+  List<TaskTool>? get taskTool {
+    final value = _taskTool;
+    if (value == null) return null;
     if (_taskTool is EqualUnmodifiableListView) return _taskTool;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_taskTool);
+    return EqualUnmodifiableListView(value);
   }
 
   final List<TaskUser>? _taskUser;
@@ -332,6 +350,15 @@ class _$TaskModelImpl implements _TaskModel {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<TaskSchema> _taskSchema;
+  @override
+  @JsonKey(name: 'task_schema')
+  List<TaskSchema> get taskSchema {
+    if (_taskSchema is EqualUnmodifiableListView) return _taskSchema;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_taskSchema);
+  }
+
   @override
   final Mentor mentor;
   @override
@@ -339,7 +366,7 @@ class _$TaskModelImpl implements _TaskModel {
 
   @override
   String toString() {
-    return 'TaskModel(id: $id, mentorId: $mentorId, namaTask: $namaTask, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, locationId: $locationId, keterangan: $keterangan, taskTool: $taskTool, taskUser: $taskUser, mentor: $mentor, location: $location)';
+    return 'TaskModel(id: $id, mentorId: $mentorId, namaTask: $namaTask, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, locationId: $locationId, keterangan: $keterangan, taskTool: $taskTool, taskUser: $taskUser, taskSchema: $taskSchema, mentor: $mentor, location: $location)';
   }
 
   @override
@@ -363,6 +390,8 @@ class _$TaskModelImpl implements _TaskModel {
                 other.keterangan == keterangan) &&
             const DeepCollectionEquality().equals(other._taskTool, _taskTool) &&
             const DeepCollectionEquality().equals(other._taskUser, _taskUser) &&
+            const DeepCollectionEquality()
+                .equals(other._taskSchema, _taskSchema) &&
             (identical(other.mentor, mentor) || other.mentor == mentor) &&
             (identical(other.location, location) ||
                 other.location == location));
@@ -382,6 +411,7 @@ class _$TaskModelImpl implements _TaskModel {
       keterangan,
       const DeepCollectionEquality().hash(_taskTool),
       const DeepCollectionEquality().hash(_taskUser),
+      const DeepCollectionEquality().hash(_taskSchema),
       mentor,
       location);
 
@@ -409,8 +439,9 @@ abstract class _TaskModel implements TaskModel {
       @JsonKey(name: 'updated_at') required final DateTime updatedAt,
       @JsonKey(name: 'location_id') required final int locationId,
       final String? keterangan,
-      @JsonKey(name: 'task_tool') required final List<TaskTool> taskTool,
+      @JsonKey(name: 'task_tool') final List<TaskTool>? taskTool,
       @JsonKey(name: 'task_user') final List<TaskUser>? taskUser,
+      @JsonKey(name: 'task_schema') required final List<TaskSchema> taskSchema,
       required final Mentor mentor,
       required final Location location}) = _$TaskModelImpl;
 
@@ -440,10 +471,13 @@ abstract class _TaskModel implements TaskModel {
   String? get keterangan;
   @override
   @JsonKey(name: 'task_tool')
-  List<TaskTool> get taskTool;
+  List<TaskTool>? get taskTool;
   @override
   @JsonKey(name: 'task_user')
   List<TaskUser>? get taskUser;
+  @override
+  @JsonKey(name: 'task_schema')
+  List<TaskSchema> get taskSchema;
   @override
   Mentor get mentor;
   @override
@@ -473,7 +507,7 @@ mixin _$TaskTool {
   @JsonKey(name: 'user_id')
   int get userId => throw _privateConstructorUsedError;
   int get qty => throw _privateConstructorUsedError;
-  Tool get tool => throw _privateConstructorUsedError;
+  ToolModel? get tool => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -495,9 +529,9 @@ abstract class $TaskToolCopyWith<$Res> {
       @JsonKey(name: 'updated_at') DateTime updatedAt,
       @JsonKey(name: 'user_id') int userId,
       int qty,
-      Tool tool});
+      ToolModel? tool});
 
-  $ToolCopyWith<$Res> get tool;
+  $ToolModelCopyWith<$Res>? get tool;
 }
 
 /// @nodoc
@@ -521,7 +555,7 @@ class _$TaskToolCopyWithImpl<$Res, $Val extends TaskTool>
     Object? updatedAt = null,
     Object? userId = null,
     Object? qty = null,
-    Object? tool = null,
+    Object? tool = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -556,17 +590,21 @@ class _$TaskToolCopyWithImpl<$Res, $Val extends TaskTool>
           ? _value.qty
           : qty // ignore: cast_nullable_to_non_nullable
               as int,
-      tool: null == tool
+      tool: freezed == tool
           ? _value.tool
           : tool // ignore: cast_nullable_to_non_nullable
-              as Tool,
+              as ToolModel?,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $ToolCopyWith<$Res> get tool {
-    return $ToolCopyWith<$Res>(_value.tool, (value) {
+  $ToolModelCopyWith<$Res>? get tool {
+    if (_value.tool == null) {
+      return null;
+    }
+
+    return $ToolModelCopyWith<$Res>(_value.tool!, (value) {
       return _then(_value.copyWith(tool: value) as $Val);
     });
   }
@@ -589,10 +627,10 @@ abstract class _$$TaskToolImplCopyWith<$Res>
       @JsonKey(name: 'updated_at') DateTime updatedAt,
       @JsonKey(name: 'user_id') int userId,
       int qty,
-      Tool tool});
+      ToolModel? tool});
 
   @override
-  $ToolCopyWith<$Res> get tool;
+  $ToolModelCopyWith<$Res>? get tool;
 }
 
 /// @nodoc
@@ -614,7 +652,7 @@ class __$$TaskToolImplCopyWithImpl<$Res>
     Object? updatedAt = null,
     Object? userId = null,
     Object? qty = null,
-    Object? tool = null,
+    Object? tool = freezed,
   }) {
     return _then(_$TaskToolImpl(
       id: null == id
@@ -649,10 +687,10 @@ class __$$TaskToolImplCopyWithImpl<$Res>
           ? _value.qty
           : qty // ignore: cast_nullable_to_non_nullable
               as int,
-      tool: null == tool
+      tool: freezed == tool
           ? _value.tool
           : tool // ignore: cast_nullable_to_non_nullable
-              as Tool,
+              as ToolModel?,
     ));
   }
 }
@@ -669,7 +707,7 @@ class _$TaskToolImpl implements _TaskTool {
       @JsonKey(name: 'updated_at') required this.updatedAt,
       @JsonKey(name: 'user_id') required this.userId,
       required this.qty,
-      required this.tool});
+      this.tool});
 
   factory _$TaskToolImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskToolImplFromJson(json);
@@ -696,7 +734,7 @@ class _$TaskToolImpl implements _TaskTool {
   @override
   final int qty;
   @override
-  final Tool tool;
+  final ToolModel? tool;
 
   @override
   String toString() {
@@ -750,7 +788,7 @@ abstract class _TaskTool implements TaskTool {
       @JsonKey(name: 'updated_at') required final DateTime updatedAt,
       @JsonKey(name: 'user_id') required final int userId,
       required final int qty,
-      required final Tool tool}) = _$TaskToolImpl;
+      final ToolModel? tool}) = _$TaskToolImpl;
 
   factory _TaskTool.fromJson(Map<String, dynamic> json) =
       _$TaskToolImpl.fromJson;
@@ -777,57 +815,55 @@ abstract class _TaskTool implements TaskTool {
   @override
   int get qty;
   @override
-  Tool get tool;
+  ToolModel? get tool;
   @override
   @JsonKey(ignore: true)
   _$$TaskToolImplCopyWith<_$TaskToolImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-Tool _$ToolFromJson(Map<String, dynamic> json) {
-  return _Tool.fromJson(json);
+TaskSchema _$TaskSchemaFromJson(Map<String, dynamic> json) {
+  return _TaskSchema.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Tool {
+mixin _$TaskSchema {
   int get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'nama_alat')
-  String get namaAlat => throw _privateConstructorUsedError;
-  String? get keterangan => throw _privateConstructorUsedError;
+  @JsonKey(name: 'task_id')
+  int get taskId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'nama_schema')
+  String get namaSchema => throw _privateConstructorUsedError;
   int get status => throw _privateConstructorUsedError;
-  @JsonKey(name: 'foto_alat')
-  String? get fotoAlat => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
-  int? get qty => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ToolCopyWith<Tool> get copyWith => throw _privateConstructorUsedError;
+  $TaskSchemaCopyWith<TaskSchema> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ToolCopyWith<$Res> {
-  factory $ToolCopyWith(Tool value, $Res Function(Tool) then) =
-      _$ToolCopyWithImpl<$Res, Tool>;
+abstract class $TaskSchemaCopyWith<$Res> {
+  factory $TaskSchemaCopyWith(
+          TaskSchema value, $Res Function(TaskSchema) then) =
+      _$TaskSchemaCopyWithImpl<$Res, TaskSchema>;
   @useResult
   $Res call(
       {int id,
-      @JsonKey(name: 'nama_alat') String namaAlat,
-      String? keterangan,
+      @JsonKey(name: 'task_id') int taskId,
+      @JsonKey(name: 'nama_schema') String namaSchema,
       int status,
-      @JsonKey(name: 'foto_alat') String? fotoAlat,
       @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt,
-      int? qty});
+      @JsonKey(name: 'updated_at') DateTime updatedAt});
 }
 
 /// @nodoc
-class _$ToolCopyWithImpl<$Res, $Val extends Tool>
-    implements $ToolCopyWith<$Res> {
-  _$ToolCopyWithImpl(this._value, this._then);
+class _$TaskSchemaCopyWithImpl<$Res, $Val extends TaskSchema>
+    implements $TaskSchemaCopyWith<$Res> {
+  _$TaskSchemaCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -838,35 +874,29 @@ class _$ToolCopyWithImpl<$Res, $Val extends Tool>
   @override
   $Res call({
     Object? id = null,
-    Object? namaAlat = null,
-    Object? keterangan = freezed,
+    Object? taskId = null,
+    Object? namaSchema = null,
     Object? status = null,
-    Object? fotoAlat = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
-    Object? qty = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      namaAlat: null == namaAlat
-          ? _value.namaAlat
-          : namaAlat // ignore: cast_nullable_to_non_nullable
+      taskId: null == taskId
+          ? _value.taskId
+          : taskId // ignore: cast_nullable_to_non_nullable
+              as int,
+      namaSchema: null == namaSchema
+          ? _value.namaSchema
+          : namaSchema // ignore: cast_nullable_to_non_nullable
               as String,
-      keterangan: freezed == keterangan
-          ? _value.keterangan
-          : keterangan // ignore: cast_nullable_to_non_nullable
-              as String?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as int,
-      fotoAlat: freezed == fotoAlat
-          ? _value.fotoAlat
-          : fotoAlat // ignore: cast_nullable_to_non_nullable
-              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -875,72 +905,62 @@ class _$ToolCopyWithImpl<$Res, $Val extends Tool>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      qty: freezed == qty
-          ? _value.qty
-          : qty // ignore: cast_nullable_to_non_nullable
-              as int?,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$ToolImplCopyWith<$Res> implements $ToolCopyWith<$Res> {
-  factory _$$ToolImplCopyWith(
-          _$ToolImpl value, $Res Function(_$ToolImpl) then) =
-      __$$ToolImplCopyWithImpl<$Res>;
+abstract class _$$TaskSchemaImplCopyWith<$Res>
+    implements $TaskSchemaCopyWith<$Res> {
+  factory _$$TaskSchemaImplCopyWith(
+          _$TaskSchemaImpl value, $Res Function(_$TaskSchemaImpl) then) =
+      __$$TaskSchemaImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {int id,
-      @JsonKey(name: 'nama_alat') String namaAlat,
-      String? keterangan,
+      @JsonKey(name: 'task_id') int taskId,
+      @JsonKey(name: 'nama_schema') String namaSchema,
       int status,
-      @JsonKey(name: 'foto_alat') String? fotoAlat,
       @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt,
-      int? qty});
+      @JsonKey(name: 'updated_at') DateTime updatedAt});
 }
 
 /// @nodoc
-class __$$ToolImplCopyWithImpl<$Res>
-    extends _$ToolCopyWithImpl<$Res, _$ToolImpl>
-    implements _$$ToolImplCopyWith<$Res> {
-  __$$ToolImplCopyWithImpl(_$ToolImpl _value, $Res Function(_$ToolImpl) _then)
+class __$$TaskSchemaImplCopyWithImpl<$Res>
+    extends _$TaskSchemaCopyWithImpl<$Res, _$TaskSchemaImpl>
+    implements _$$TaskSchemaImplCopyWith<$Res> {
+  __$$TaskSchemaImplCopyWithImpl(
+      _$TaskSchemaImpl _value, $Res Function(_$TaskSchemaImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
-    Object? namaAlat = null,
-    Object? keterangan = freezed,
+    Object? taskId = null,
+    Object? namaSchema = null,
     Object? status = null,
-    Object? fotoAlat = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
-    Object? qty = freezed,
   }) {
-    return _then(_$ToolImpl(
+    return _then(_$TaskSchemaImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      namaAlat: null == namaAlat
-          ? _value.namaAlat
-          : namaAlat // ignore: cast_nullable_to_non_nullable
+      taskId: null == taskId
+          ? _value.taskId
+          : taskId // ignore: cast_nullable_to_non_nullable
+              as int,
+      namaSchema: null == namaSchema
+          ? _value.namaSchema
+          : namaSchema // ignore: cast_nullable_to_non_nullable
               as String,
-      keterangan: freezed == keterangan
-          ? _value.keterangan
-          : keterangan // ignore: cast_nullable_to_non_nullable
-              as String?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as int,
-      fotoAlat: freezed == fotoAlat
-          ? _value.fotoAlat
-          : fotoAlat // ignore: cast_nullable_to_non_nullable
-              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -949,120 +969,104 @@ class __$$ToolImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      qty: freezed == qty
-          ? _value.qty
-          : qty // ignore: cast_nullable_to_non_nullable
-              as int?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$ToolImpl implements _Tool {
-  const _$ToolImpl(
+class _$TaskSchemaImpl implements _TaskSchema {
+  const _$TaskSchemaImpl(
       {required this.id,
-      @JsonKey(name: 'nama_alat') required this.namaAlat,
-      this.keterangan,
+      @JsonKey(name: 'task_id') required this.taskId,
+      @JsonKey(name: 'nama_schema') required this.namaSchema,
       required this.status,
-      @JsonKey(name: 'foto_alat') this.fotoAlat,
       @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'updated_at') required this.updatedAt,
-      this.qty});
+      @JsonKey(name: 'updated_at') required this.updatedAt});
 
-  factory _$ToolImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ToolImplFromJson(json);
+  factory _$TaskSchemaImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TaskSchemaImplFromJson(json);
 
   @override
   final int id;
   @override
-  @JsonKey(name: 'nama_alat')
-  final String namaAlat;
+  @JsonKey(name: 'task_id')
+  final int taskId;
   @override
-  final String? keterangan;
+  @JsonKey(name: 'nama_schema')
+  final String namaSchema;
   @override
   final int status;
-  @override
-  @JsonKey(name: 'foto_alat')
-  final String? fotoAlat;
   @override
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
-  @override
-  final int? qty;
 
   @override
   String toString() {
-    return 'Tool(id: $id, namaAlat: $namaAlat, keterangan: $keterangan, status: $status, fotoAlat: $fotoAlat, createdAt: $createdAt, updatedAt: $updatedAt, qty: $qty)';
+    return 'TaskSchema(id: $id, taskId: $taskId, namaSchema: $namaSchema, status: $status, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ToolImpl &&
+            other is _$TaskSchemaImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.namaAlat, namaAlat) ||
-                other.namaAlat == namaAlat) &&
-            (identical(other.keterangan, keterangan) ||
-                other.keterangan == keterangan) &&
+            (identical(other.taskId, taskId) || other.taskId == taskId) &&
+            (identical(other.namaSchema, namaSchema) ||
+                other.namaSchema == namaSchema) &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.fotoAlat, fotoAlat) ||
-                other.fotoAlat == fotoAlat) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
-            (identical(other.qty, qty) || other.qty == qty));
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, namaAlat, keterangan, status,
-      fotoAlat, createdAt, updatedAt, qty);
+  int get hashCode => Object.hash(
+      runtimeType, id, taskId, namaSchema, status, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ToolImplCopyWith<_$ToolImpl> get copyWith =>
-      __$$ToolImplCopyWithImpl<_$ToolImpl>(this, _$identity);
+  _$$TaskSchemaImplCopyWith<_$TaskSchemaImpl> get copyWith =>
+      __$$TaskSchemaImplCopyWithImpl<_$TaskSchemaImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ToolImplToJson(
+    return _$$TaskSchemaImplToJson(
       this,
     );
   }
 }
 
-abstract class _Tool implements Tool {
-  const factory _Tool(
-      {required final int id,
-      @JsonKey(name: 'nama_alat') required final String namaAlat,
-      final String? keterangan,
-      required final int status,
-      @JsonKey(name: 'foto_alat') final String? fotoAlat,
-      @JsonKey(name: 'created_at') required final DateTime createdAt,
-      @JsonKey(name: 'updated_at') required final DateTime updatedAt,
-      final int? qty}) = _$ToolImpl;
+abstract class _TaskSchema implements TaskSchema {
+  const factory _TaskSchema(
+          {required final int id,
+          @JsonKey(name: 'task_id') required final int taskId,
+          @JsonKey(name: 'nama_schema') required final String namaSchema,
+          required final int status,
+          @JsonKey(name: 'created_at') required final DateTime createdAt,
+          @JsonKey(name: 'updated_at') required final DateTime updatedAt}) =
+      _$TaskSchemaImpl;
 
-  factory _Tool.fromJson(Map<String, dynamic> json) = _$ToolImpl.fromJson;
+  factory _TaskSchema.fromJson(Map<String, dynamic> json) =
+      _$TaskSchemaImpl.fromJson;
 
   @override
   int get id;
   @override
-  @JsonKey(name: 'nama_alat')
-  String get namaAlat;
+  @JsonKey(name: 'task_id')
+  int get taskId;
   @override
-  String? get keterangan;
+  @JsonKey(name: 'nama_schema')
+  String get namaSchema;
   @override
   int get status;
-  @override
-  @JsonKey(name: 'foto_alat')
-  String? get fotoAlat;
   @override
   @JsonKey(name: 'created_at')
   DateTime get createdAt;
@@ -1070,10 +1074,8 @@ abstract class _Tool implements Tool {
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt;
   @override
-  int? get qty;
-  @override
   @JsonKey(ignore: true)
-  _$$ToolImplCopyWith<_$ToolImpl> get copyWith =>
+  _$$TaskSchemaImplCopyWith<_$TaskSchemaImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1365,6 +1367,283 @@ abstract class _TaskUser implements TaskUser {
   @override
   @JsonKey(ignore: true)
   _$$TaskUserImplCopyWith<_$TaskUserImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+TaskCreateData _$TaskCreateDataFromJson(Map<String, dynamic> json) {
+  return _TaskCreateData.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TaskCreateData {
+  int get locationId => throw _privateConstructorUsedError;
+  String get namaTask => throw _privateConstructorUsedError;
+  String get keterangan => throw _privateConstructorUsedError;
+  List<int>? get toolIds => throw _privateConstructorUsedError;
+  List<int>? get toolQuantities => throw _privateConstructorUsedError;
+  List<String> get progressList => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $TaskCreateDataCopyWith<TaskCreateData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TaskCreateDataCopyWith<$Res> {
+  factory $TaskCreateDataCopyWith(
+          TaskCreateData value, $Res Function(TaskCreateData) then) =
+      _$TaskCreateDataCopyWithImpl<$Res, TaskCreateData>;
+  @useResult
+  $Res call(
+      {int locationId,
+      String namaTask,
+      String keterangan,
+      List<int>? toolIds,
+      List<int>? toolQuantities,
+      List<String> progressList});
+}
+
+/// @nodoc
+class _$TaskCreateDataCopyWithImpl<$Res, $Val extends TaskCreateData>
+    implements $TaskCreateDataCopyWith<$Res> {
+  _$TaskCreateDataCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? locationId = null,
+    Object? namaTask = null,
+    Object? keterangan = null,
+    Object? toolIds = freezed,
+    Object? toolQuantities = freezed,
+    Object? progressList = null,
+  }) {
+    return _then(_value.copyWith(
+      locationId: null == locationId
+          ? _value.locationId
+          : locationId // ignore: cast_nullable_to_non_nullable
+              as int,
+      namaTask: null == namaTask
+          ? _value.namaTask
+          : namaTask // ignore: cast_nullable_to_non_nullable
+              as String,
+      keterangan: null == keterangan
+          ? _value.keterangan
+          : keterangan // ignore: cast_nullable_to_non_nullable
+              as String,
+      toolIds: freezed == toolIds
+          ? _value.toolIds
+          : toolIds // ignore: cast_nullable_to_non_nullable
+              as List<int>?,
+      toolQuantities: freezed == toolQuantities
+          ? _value.toolQuantities
+          : toolQuantities // ignore: cast_nullable_to_non_nullable
+              as List<int>?,
+      progressList: null == progressList
+          ? _value.progressList
+          : progressList // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$TaskCreateDataImplCopyWith<$Res>
+    implements $TaskCreateDataCopyWith<$Res> {
+  factory _$$TaskCreateDataImplCopyWith(_$TaskCreateDataImpl value,
+          $Res Function(_$TaskCreateDataImpl) then) =
+      __$$TaskCreateDataImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int locationId,
+      String namaTask,
+      String keterangan,
+      List<int>? toolIds,
+      List<int>? toolQuantities,
+      List<String> progressList});
+}
+
+/// @nodoc
+class __$$TaskCreateDataImplCopyWithImpl<$Res>
+    extends _$TaskCreateDataCopyWithImpl<$Res, _$TaskCreateDataImpl>
+    implements _$$TaskCreateDataImplCopyWith<$Res> {
+  __$$TaskCreateDataImplCopyWithImpl(
+      _$TaskCreateDataImpl _value, $Res Function(_$TaskCreateDataImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? locationId = null,
+    Object? namaTask = null,
+    Object? keterangan = null,
+    Object? toolIds = freezed,
+    Object? toolQuantities = freezed,
+    Object? progressList = null,
+  }) {
+    return _then(_$TaskCreateDataImpl(
+      locationId: null == locationId
+          ? _value.locationId
+          : locationId // ignore: cast_nullable_to_non_nullable
+              as int,
+      namaTask: null == namaTask
+          ? _value.namaTask
+          : namaTask // ignore: cast_nullable_to_non_nullable
+              as String,
+      keterangan: null == keterangan
+          ? _value.keterangan
+          : keterangan // ignore: cast_nullable_to_non_nullable
+              as String,
+      toolIds: freezed == toolIds
+          ? _value._toolIds
+          : toolIds // ignore: cast_nullable_to_non_nullable
+              as List<int>?,
+      toolQuantities: freezed == toolQuantities
+          ? _value._toolQuantities
+          : toolQuantities // ignore: cast_nullable_to_non_nullable
+              as List<int>?,
+      progressList: null == progressList
+          ? _value._progressList
+          : progressList // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$TaskCreateDataImpl implements _TaskCreateData {
+  const _$TaskCreateDataImpl(
+      {required this.locationId,
+      required this.namaTask,
+      required this.keterangan,
+      final List<int>? toolIds,
+      final List<int>? toolQuantities,
+      required final List<String> progressList})
+      : _toolIds = toolIds,
+        _toolQuantities = toolQuantities,
+        _progressList = progressList;
+
+  factory _$TaskCreateDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TaskCreateDataImplFromJson(json);
+
+  @override
+  final int locationId;
+  @override
+  final String namaTask;
+  @override
+  final String keterangan;
+  final List<int>? _toolIds;
+  @override
+  List<int>? get toolIds {
+    final value = _toolIds;
+    if (value == null) return null;
+    if (_toolIds is EqualUnmodifiableListView) return _toolIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<int>? _toolQuantities;
+  @override
+  List<int>? get toolQuantities {
+    final value = _toolQuantities;
+    if (value == null) return null;
+    if (_toolQuantities is EqualUnmodifiableListView) return _toolQuantities;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<String> _progressList;
+  @override
+  List<String> get progressList {
+    if (_progressList is EqualUnmodifiableListView) return _progressList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_progressList);
+  }
+
+  @override
+  String toString() {
+    return 'TaskCreateData(locationId: $locationId, namaTask: $namaTask, keterangan: $keterangan, toolIds: $toolIds, toolQuantities: $toolQuantities, progressList: $progressList)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TaskCreateDataImpl &&
+            (identical(other.locationId, locationId) ||
+                other.locationId == locationId) &&
+            (identical(other.namaTask, namaTask) ||
+                other.namaTask == namaTask) &&
+            (identical(other.keterangan, keterangan) ||
+                other.keterangan == keterangan) &&
+            const DeepCollectionEquality().equals(other._toolIds, _toolIds) &&
+            const DeepCollectionEquality()
+                .equals(other._toolQuantities, _toolQuantities) &&
+            const DeepCollectionEquality()
+                .equals(other._progressList, _progressList));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      locationId,
+      namaTask,
+      keterangan,
+      const DeepCollectionEquality().hash(_toolIds),
+      const DeepCollectionEquality().hash(_toolQuantities),
+      const DeepCollectionEquality().hash(_progressList));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TaskCreateDataImplCopyWith<_$TaskCreateDataImpl> get copyWith =>
+      __$$TaskCreateDataImplCopyWithImpl<_$TaskCreateDataImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TaskCreateDataImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _TaskCreateData implements TaskCreateData {
+  const factory _TaskCreateData(
+      {required final int locationId,
+      required final String namaTask,
+      required final String keterangan,
+      final List<int>? toolIds,
+      final List<int>? toolQuantities,
+      required final List<String> progressList}) = _$TaskCreateDataImpl;
+
+  factory _TaskCreateData.fromJson(Map<String, dynamic> json) =
+      _$TaskCreateDataImpl.fromJson;
+
+  @override
+  int get locationId;
+  @override
+  String get namaTask;
+  @override
+  String get keterangan;
+  @override
+  List<int>? get toolIds;
+  @override
+  List<int>? get toolQuantities;
+  @override
+  List<String> get progressList;
+  @override
+  @JsonKey(ignore: true)
+  _$$TaskCreateDataImplCopyWith<_$TaskCreateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

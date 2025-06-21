@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:internship_app/core/const/constanst.dart';
 import 'package:internship_app/core/utils/token_manager.dart';
+import 'package:internship_app/feature/Task/data/model/task_model.dart';
 
 import 'package:internship_app/feature/Tool/data/model/tool_model.dart';
 
@@ -95,6 +96,98 @@ class ToolRepository {
       }
     } catch (e, stackTrace) {
       log('Terjadi kesalahan saat getCurrentTool: $e', name: 'ToolRepository');
+      log('StackTrace: $stackTrace');
+      rethrow;
+    }
+  }
+
+  Future<Tool> getDetailTool(int toolId) async {
+    try {
+      final token = await _tokenManager.getToken();
+
+      if (token == null) {
+        throw Exception('Token tidak tersedia');
+      }
+
+      final url = Uri.parse('$baseUrl/tool/$toolId');
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      log('GET $url');
+      log('Status Code: ${response.statusCode}');
+      log('Response Body: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> body = jsonDecode(response.body);
+
+        // Ambil data object
+        final dynamic data = body['data'];
+        if (data != null) {
+          return Tool.fromJson(data);
+        } else {
+          throw Exception('Data Tool tidak ditemukan.');
+        }
+      } else {
+        final Map<String, dynamic> body = jsonDecode(response.body);
+        final errorMessage =
+            body['message'] ?? 'Terjadi kesalahan saat memuat Tool.';
+        throw Exception('Gagal memuat Tool: $errorMessage');
+      }
+    } catch (e, stackTrace) {
+      log('Terjadi kesalahan saat getDetailTool: $e', name: 'ToolRepository');
+      log('StackTrace: $stackTrace');
+      rethrow;
+    }
+  }
+
+  Future<TaskModel> bringBackTool(int toolId) async {
+    try {
+      final token = await _tokenManager.getToken();
+
+      log(toolId.toString());
+      if (token == null) {
+        throw Exception('Token tidak tersedia');
+      }
+
+      final url = Uri.parse('$baseUrl/tool/tool-back');
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+        body: {
+          'tool_id': toolId.toString(),
+        },
+      );
+
+      log('GET $url');
+      log('Status Code: ${response.statusCode}');
+      log('Response Body: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> body = jsonDecode(response.body);
+
+        // Ambil data object
+        final dynamic data = body['data'];
+        if (data != null) {
+          return TaskModel.fromJson(data);
+        } else {
+          throw Exception('Data Task tidak ditemukan.');
+        }
+      } else {
+        final Map<String, dynamic> body = jsonDecode(response.body);
+        final errorMessage =
+            body['message'] ?? 'Terjadi kesalahan saat memuat Tool.';
+        throw Exception('Gagal memuat Tool: $errorMessage');
+      }
+    } catch (e, stackTrace) {
+      log('Terjadi kesalahan saat getDetailTool: $e', name: 'ToolRepository');
       log('StackTrace: $stackTrace');
       rethrow;
     }

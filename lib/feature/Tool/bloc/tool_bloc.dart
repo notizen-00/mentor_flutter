@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:internship_app/feature/Task/data/model/task_model.dart';
 import 'package:internship_app/feature/Tool/data/model/tool_model.dart';
 import 'package:internship_app/feature/Tool/data/repository/tool_repository.dart';
 
@@ -13,6 +14,8 @@ class ToolBloc extends Bloc<ToolEvent, ToolState> {
   ToolBloc({required this.toolRepository}) : super(ToolInitial()) {
     on<CreateTool>(_onCreateTool);
     on<LoadCurrentTool>(_onLoadCurrentTool);
+    on<LoadDetailTool>(_onLoadDetailTool);
+    on<BringBackTool>(_onBringBackTool);
   }
 
   Future<void> _onCreateTool(
@@ -43,6 +46,33 @@ class ToolBloc extends Bloc<ToolEvent, ToolState> {
     try {
       final List<ToolModel> tool = await toolRepository.getCurrentTool();
       emit(ToolLoaded(tool));
+    } catch (e) {
+      emit(ToolError(e.toString()));
+    }
+  }
+
+  Future<void> _onLoadDetailTool(
+    LoadDetailTool event,
+    Emitter<ToolState> emit,
+  ) async {
+    emit(ToolLoading());
+    try {
+      final Tool tool = await toolRepository.getDetailTool(event.toolId);
+      emit(ToolDetailLoaded(tool));
+    } catch (e) {
+      emit(ToolError(e.toString()));
+    }
+  }
+
+  Future<void> _onBringBackTool(
+    BringBackTool event,
+    Emitter<ToolState> emit,
+  ) async {
+    emit(ToolLoading());
+    try {
+      final TaskModel task = await toolRepository.bringBackTool(event.toolId);
+
+      emit(ToolBackSuccess(task));
     } catch (e) {
       emit(ToolError(e.toString()));
     }

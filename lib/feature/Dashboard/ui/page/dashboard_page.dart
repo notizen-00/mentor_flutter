@@ -4,6 +4,8 @@ import 'package:internship_app/core/theme/app_colors.dart';
 import 'package:internship_app/feature/Dashboard/ui/widget/task_active.dart';
 import 'package:internship_app/feature/Siswa/bloc/siswa_bloc.dart';
 import 'package:internship_app/feature/Siswa/ui/page/list_siswa_page.dart';
+import 'package:internship_app/feature/Tool/bloc/tool_bloc.dart';
+import 'package:internship_app/feature/Tool/ui/page/tool_page.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -39,17 +41,25 @@ class DashboardPage extends StatelessWidget {
                     );
                   },
                   child: const DashboardCard(
-                    title: "Magang",
+                    title: "Siswa Magang",
                     value: "4",
                     icon: Icons.person_pin_sharp,
                     color: Colors.green,
                   ),
                 ),
-                DashboardCard(
-                  title: "Tools",
-                  value: "21",
-                  icon: Icons.inventory_2_outlined,
-                  color: Colors.purple,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ToolPage()),
+                    );
+                  },
+                  child: const DashboardCard(
+                    title: "Tools",
+                    value: "6",
+                    icon: Icons.inventory_2_outlined,
+                    color: Colors.purple,
+                  ),
                 ),
                 DashboardCard(
                   title: "Task",

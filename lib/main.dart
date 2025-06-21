@@ -14,6 +14,7 @@ import 'package:internship_app/feature/Logbook/bloc/logbook_bloc.dart';
 import 'package:internship_app/feature/Root/ui/root_page.dart';
 import 'package:internship_app/feature/Siswa/bloc/siswa_bloc.dart';
 import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
+import 'package:internship_app/feature/Tool/bloc/tool_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -58,6 +59,9 @@ class MyApp extends StatelessWidget {
           BlocProvider<InformasiBloc>(
             create: (_) => sl<InformasiBloc>(),
           ),
+          BlocProvider<ToolBloc>(
+            create: (_) => sl<ToolBloc>(),
+          )
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

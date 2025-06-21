@@ -86,12 +86,6 @@ Future<void> connectToPusher() async {
         if (parsed['channel'] == privateChannel) {
           final rawData = parsed['data'];
           final data = jsonDecode(rawData);
-
-          final status = data['status'] ?? 'Status tidak diketahui';
-          final handler = data['deliveryHandler'] ?? 'Pengirim tidak diketahui';
-
-          final notifMessage = 'Judul: $status\nDeskripsi: $handler';
-          await showNotification('Pengumuman', notifMessage);
         }
 
         // Jika ada error dari pusher
