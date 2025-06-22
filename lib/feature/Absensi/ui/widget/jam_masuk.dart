@@ -19,9 +19,6 @@ class _JamMasukCardState extends State<JamMasukCard> {
     return BlocListener<AbsensiBloc, AbsensiState>(
       listener: (context, state) {
         if (state is AbsensiMasukSuccess && state.absen.tipe == 'masuk') {
-          final waktu = DateTime.parse(state.absen.waktu);
-          final jam = DateFormat.Hm('id_ID').format(waktu);
-
           showSuccessToast(context, 'Berhasil Absen Masuk');
 
           context.read<AbsensiBloc>().add(CheckAbsensi('masuk'));

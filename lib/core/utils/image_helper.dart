@@ -19,7 +19,7 @@ class UniversalNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isValid = url.trim().isNotEmpty;
-    final fallbackUrl = 'https://avatar.iran.liara.run/public/';
+    const fallbackUrl = 'https://avatar.iran.liara.run/public/';
     final finalUrl = isValid ? url : fallbackUrl;
 
     if (kIsWeb) {

@@ -30,7 +30,7 @@ class AbsensiRepository {
 
       final body = jsonDecode(response.body);
       log('Response Body: $body');
-
+      await _absensiManager.getAbsensi();
       if (response.statusCode == 200) {
         if (body is Map<String, dynamic>) {
           final absensiModel = HistoryAbsensiModel.fromJson(body);

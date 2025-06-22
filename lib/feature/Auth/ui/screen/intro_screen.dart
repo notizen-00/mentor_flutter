@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:internship_app/core/theme/app_colors.dart';
 import 'package:internship_app/feature/Auth/ui/page/login_page.dart';
-import 'package:internship_app/feature/Auth/ui/page/register_page.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});

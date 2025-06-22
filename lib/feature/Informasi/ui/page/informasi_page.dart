@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internship_app/core/utils/toast_utils.dart';
@@ -21,14 +20,6 @@ class _InformasiPageState extends State<InformasiPage> {
 
   String _formatDate(DateTime date) {
     return DateFormat('dd MMMM yyyy', 'id_ID').format(date);
-  }
-
-  String _fixImageUrl(String url) {
-    log(url);
-    return url.replaceFirst(
-      'http://localhost/public/Informasis/Informasis/',
-      'http://localhost/storage/Informasis/',
-    );
   }
 
   @override

@@ -6,9 +6,6 @@ import 'package:internship_app/core/const/constanst.dart';
 import 'package:internship_app/core/theme/app_colors.dart';
 import 'package:internship_app/core/utils/image_helper.dart';
 import 'package:internship_app/feature/Absensi/bloc/absensi_bloc.dart';
-import 'package:internship_app/feature/Absensi/ui/widget/jam_keluar.dart';
-import 'package:internship_app/feature/Absensi/ui/widget/jam_masuk.dart';
-import 'package:internship_app/feature/Absensi/ui/widget/map_widget.dart';
 import 'package:internship_app/feature/Dashboard/ui/page/dashboard_page.dart';
 import 'package:internship_app/feature/Informasi/ui/page/informasi_page.dart';
 import 'package:internship_app/feature/Informasi/ui/widget/informasi_card.dart';
@@ -384,7 +381,7 @@ class ProxyNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fallbackUrl = 'https://avatar.iran.liara.run/public/';
+    const fallbackUrl = 'https://avatar.iran.liara.run/public/';
     final imageUrl = (url != null && url!.isNotEmpty) ? url! : fallbackUrl;
 
     return ClipRRect(

@@ -3,13 +3,10 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:internship_app/core/const/constanst.dart';
 import 'package:internship_app/core/utils/toast_utils.dart';
-import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
-import 'package:internship_app/feature/Task/data/model/task_model.dart';
 
 class Mentor {
   final int id;

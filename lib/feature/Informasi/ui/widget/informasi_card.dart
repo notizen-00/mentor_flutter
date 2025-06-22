@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internship_app/feature/Informasi/bloc/informasi_bloc.dart';
 import 'package:intl/intl.dart';
@@ -12,13 +11,11 @@ class InformasiInfoCard extends StatelessWidget {
     return BlocConsumer<InformasiBloc, InformasiState>(
       listener: (context, state) {},
       builder: (context, state) {
-        int total = 0;
         int saatIni = 0;
+        // ignore: unused_local_variable
         int kedepan = 0;
 
         if (state is InformasiLoaded) {
-          total = state.informasis.length;
-
           final today = DateTime.now();
           final todayStr = DateFormat('yyyy-MM-dd').format(today);
 

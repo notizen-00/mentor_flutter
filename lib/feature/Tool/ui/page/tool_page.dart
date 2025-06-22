@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internship_app/core/theme/app_colors.dart';
 import 'package:internship_app/core/utils/toast_utils.dart';
-import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
 import 'package:internship_app/feature/Tool/bloc/tool_bloc.dart';
 import 'package:internship_app/feature/Tool/data/model/tool_model.dart';
 import 'package:internship_app/feature/Tool/ui/page/tool_detail_page.dart';
@@ -29,7 +28,7 @@ class _ToolPageState extends State<ToolPage> {
     return BlocListener<ToolBloc, ToolState>(
       listener: (context, state) {
         if (state is ToolLoaded) {
-          showSuccessToast(context, 'Tool sukses di-load!');
+          // showSuccessToast(context, 'Tool sukses di-load!');
         }
       },
       child: Scaffold(

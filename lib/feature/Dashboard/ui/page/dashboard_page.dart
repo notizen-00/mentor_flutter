@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internship_app/core/theme/app_colors.dart';
 import 'package:internship_app/feature/Dashboard/ui/widget/task_active.dart';
 import 'package:internship_app/feature/Siswa/bloc/siswa_bloc.dart';
 import 'package:internship_app/feature/Siswa/ui/page/list_siswa_page.dart';
-import 'package:internship_app/feature/Tool/bloc/tool_bloc.dart';
 import 'package:internship_app/feature/Tool/ui/page/tool_page.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -25,7 +23,7 @@ class DashboardPage extends StatelessWidget {
               crossAxisSpacing: 12,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                DashboardCard(
+                const DashboardCard(
                   title: "Staff",
                   value: "15",
                   icon: Icons.person_pin_circle_outlined,
@@ -61,7 +59,7 @@ class DashboardPage extends StatelessWidget {
                     color: Colors.purple,
                   ),
                 ),
-                DashboardCard(
+                const DashboardCard(
                   title: "Task",
                   value: "0",
                   icon: Icons.task_outlined,

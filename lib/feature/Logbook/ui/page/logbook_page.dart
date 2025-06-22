@@ -430,8 +430,8 @@ class _LogbookPageState extends State<LogbookPage>
   }
 
   void _handleVerifikasi(BuildContext context, dynamic logbook) {
-    final TextEditingController _keteranganController = TextEditingController();
-    double _rating = 3;
+    final TextEditingController keteranganController = TextEditingController();
+    double rating = 3;
 
     showModalBottomSheet(
       context: context,
@@ -506,20 +506,20 @@ class _LogbookPageState extends State<LogbookPage>
                 const Text('Rating:',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 Slider(
-                  value: _rating,
+                  value: rating,
                   min: 1,
                   max: 5,
                   divisions: 4,
-                  label: _rating.toStringAsFixed(0),
+                  label: rating.toStringAsFixed(0),
                   onChanged: (value) => setState(() {
-                    _rating = value;
+                    rating = value;
                   }),
                 ),
                 const SizedBox(height: 12),
                 const Text('Catatan:',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 TextFormField(
-                  controller: _keteranganController,
+                  controller: keteranganController,
                   maxLines: 3,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -539,11 +539,11 @@ class _LogbookPageState extends State<LogbookPage>
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {
-                      final keterangan = _keteranganController.text.trim();
+                      final keterangan = keteranganController.text.trim();
 
                       context.read<LogbookBloc>().add(VerifikasiLogbook(
                           logbookId: logbook.id,
-                          rating: _rating,
+                          rating: rating,
                           keterangan: keterangan));
 
                       Navigator.pop(context);

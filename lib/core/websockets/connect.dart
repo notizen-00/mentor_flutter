@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:internship_app/core/services/service_locator.dart';
-import 'package:internship_app/core/utils/notification_helper.dart';
 import 'package:internship_app/core/utils/siswa_manager.dart';
 import 'package:internship_app/core/utils/token_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -83,10 +82,7 @@ Future<void> connectToPusher() async {
         }
 
         // Jika pesan dari channel private
-        if (parsed['channel'] == privateChannel) {
-          final rawData = parsed['data'];
-          final data = jsonDecode(rawData);
-        }
+        if (parsed['channel'] == privateChannel) {}
 
         // Jika ada error dari pusher
         if (parsed['event'] == 'pusher:error') {
