@@ -3,13 +3,15 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:internship_app/core/services/service_locator.dart';
+import 'package:internship_app/core/utils/notification_helper.dart';
 import 'package:internship_app/core/utils/siswa_manager.dart';
 import 'package:internship_app/core/utils/token_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 Future<void> connectToPusher() async {
-  const reverbHost = '10.10.10.194';
-  const reverbAppKey = 'wxchwyrzgjxjax9qvx5a';
+  const reverbHost = '192.168.1.11';
+  // const reverbAppKey = 'wxchwyrzgjxjax9qvx5a';
+  const reverbAppKey = '12345';
   const wsUrl = 'ws://$reverbHost:8080/app/$reverbAppKey';
   const broadcastAuthUrl = 'http://$reverbHost/api/broadcasting/auth';
 
@@ -22,6 +24,7 @@ Future<void> connectToPusher() async {
   }
 
   final privateChannel = 'private-tasks.${siswa.id}';
+  const publicChannel = 'public-task';
   log('[Pusher] Connecting to channel: $privateChannel');
 
   final channel = WebSocketChannel.connect(Uri.parse(wsUrl));
@@ -41,7 +44,6 @@ Future<void> connectToPusher() async {
           log('[Pusher] Sent pong');
         }
 
-        // Saat koneksi berhasil dan kita mendapatkan socket_id
         if (parsed['event'] == 'pusher:connection_established') {
           final connectionData = jsonDecode(parsed['data']);
           final socketId = connectionData['socket_id'];
@@ -73,6 +75,13 @@ Future<void> connectToPusher() async {
               }
             };
 
+            final subscribePublic = {
+              'event': 'pusher:subscribe',
+              'data': {'channel': publicChannel}
+            };
+
+            channel.sink.add(jsonEncode(subscribePublic));
+
             channel.sink.add(jsonEncode(subscribePayload));
             log('[Pusher] Subscribed to $privateChannel');
           } else {
@@ -82,7 +91,33 @@ Future<void> connectToPusher() async {
         }
 
         // Jika pesan dari channel private
-        if (parsed['channel'] == privateChannel) {}
+        if (parsed['channel'] == privateChannel) {
+          final rawData = parsed['data'];
+          final data = jsonDecode(rawData);
+        }
+
+        if (parsed['event'] == 'event.task' &&
+            parsed['channel'] == 'public-task') {
+          final rawData = parsed['data'];
+
+          late Map<String, dynamic> data;
+
+          if (rawData is Map<String, dynamic>) {
+            data = rawData;
+          } else if (rawData is String) {
+            data = jsonDecode(rawData);
+          } else {
+            log('[Pusher] Unexpected data format: $rawData');
+            return;
+          }
+
+          log('[Pusher] Parsed Data: $data');
+
+          final title = data['title'] ?? 'Informasi';
+          final message = data['description'] ?? 'Pesan tidak tersedia';
+
+          await showNotification('Task Baru: $title', message);
+        }
 
         // Jika ada error dari pusher
         if (parsed['event'] == 'pusher:error') {

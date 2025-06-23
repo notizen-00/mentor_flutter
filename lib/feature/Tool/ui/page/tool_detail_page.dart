@@ -12,7 +12,7 @@ class ToolDetailPage extends StatelessWidget {
     return BlocListener<ToolBloc, ToolState>(
       listener: (context, state) {
         if (state is ToolDetailLoaded) {
-          // Log atau aksi lain
+          // Aksi tambahan kalau perlu
         }
       },
       child: BlocBuilder<ToolBloc, ToolState>(
@@ -33,7 +33,12 @@ class ToolDetailPage extends StatelessWidget {
                 ),
                 title: Text(
                   'Detail Alat: ${tool.namaAlat}',
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  maxLines: 1,
                 ),
               ),
               body: Padding(
@@ -44,29 +49,36 @@ class ToolDetailPage extends StatelessWidget {
                     Text(
                       tool.namaAlat,
                       style: const TextStyle(
-                        fontSize: 22,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Stok Saat Ini: ${tool.qty}',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 13,
                         color: tool.qty > 0 ? Colors.green : Colors.red,
                       ),
                     ),
-                    const Divider(height: 32),
+                    const Divider(height: 24),
                     const Text(
                       'Riwayat Stok:',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Expanded(
                       child: stockLogs.isEmpty
                           ? const Center(
-                              child: Text('Belum ada riwayat stok.'),
+                              child: Text(
+                                'Belum ada riwayat stok.',
+                                style: TextStyle(fontSize: 12),
+                              ),
                             )
                           : ListView.separated(
                               itemCount: stockLogs.length,
@@ -87,34 +99,56 @@ class ToolDetailPage extends StatelessWidget {
                                     isThreeLine: true,
                                     leading: Icon(icon, color: color),
                                     title: Text(
-                                        '${log.typeName} / ${log.qty} item '),
+                                      '${log.typeName} / ${log.qty} item',
+                                      style: const TextStyle(fontSize: 13),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                     subtitle: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        Chip(
+                                          label: Text(
+                                            log.lokasi,
+                                            style: const TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.white),
+                                          ),
+                                          visualDensity: VisualDensity.compact,
+                                          backgroundColor: Colors.green,
+                                        ),
                                         Text(
-                                          '${log.lokasi} • ${log.keterangan} ',
-                                          style: const TextStyle(fontSize: 14),
+                                          log.keterangan,
+                                          style: const TextStyle(fontSize: 12),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                         const SizedBox(height: 4),
                                         Row(
                                           children: [
                                             const Icon(Icons.person,
-                                                size: 16, color: Colors.grey),
+                                                size: 14, color: Colors.grey),
                                             const SizedBox(width: 4),
-                                            Text(
-                                              log.user.name,
-                                              style: const TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.black87),
+                                            Flexible(
+                                              child: Text(
+                                                log.user.name,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black87),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
                                             ),
                                           ],
                                         ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          _formatDate(log.createdAt),
+                                          style: const TextStyle(
+                                              fontSize: 11, color: Colors.grey),
+                                        ),
                                       ],
-                                    ),
-                                    trailing: Text(
-                                      _formatDate(log.createdAt),
-                                      style: const TextStyle(fontSize: 12),
                                     ),
                                   ),
                                 );
@@ -134,7 +168,7 @@ class ToolDetailPage extends StatelessWidget {
               body: Center(
                 child: Text(
                   'Server Error!',
-                  style: TextStyle(color: Colors.red),
+                  style: TextStyle(color: Colors.red, fontSize: 14),
                 ),
               ),
             );
@@ -154,8 +188,7 @@ class ToolDetailPage extends StatelessWidget {
     }
 
     if (dateTime != null) {
-      // Atur locale ke Indonesia
-      return DateFormat('d MMMM yyyy • HH:mm', 'id_ID').format(dateTime);
+      return DateFormat('d MMM yyyy • HH:mm', 'id_ID').format(dateTime);
     }
 
     return '';

@@ -25,8 +25,8 @@ class WebSocketService {
     required OnJoinCallback onJoin,
     required OnLeaveCallback onLeave,
   }) async {
-    const host = '10.10.10.194';
-    const appKey = 'wxchwyrzgjxjax9qvx5a';
+    const host = '192.168.1.11';
+    const appKey = '12345';
     const authUrl = 'http://$host/api/broadcasting/auth';
 
     const wsUrl =

@@ -115,213 +115,108 @@ class _TaskPageState extends State<TaskPage>
                                     final task = filteredTasks[index];
 
                                     return Container(
-                                        margin:
-                                            const EdgeInsets.only(bottom: 12),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          border:
-                                              Border.all(color: Colors.blue),
+                                      margin: const EdgeInsets.only(bottom: 12),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(color: Colors.blue),
+                                      ),
+                                      child: ListTile(
+                                        minLeadingWidth: 1,
+                                        dense: true,
+                                        visualDensity: VisualDensity.compact,
+                                        iconColor: Colors.blueAccent,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 10,
                                         ),
-                                        child: ListTile(
-                                          leading: IconButton(
-                                            icon: const Icon(Icons.settings),
-                                            onPressed: () {
-                                              TaskSetting.show(
-                                                context,
-                                                child: SizedBox(
-                                                  width: double.infinity,
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      const Text(
-                                                        'Ini konten bottom sheet',
-                                                        style: TextStyle(
-                                                            fontSize: 16),
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 16),
-                                                      ElevatedButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                context),
-                                                        child:
-                                                            const Text('Tutup'),
-                                                      ),
-                                                    ],
-                                                  ),
+                                        title: Text(
+                                          task.namaTask,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 4),
+                                            RichText(
+                                              text: TextSpan(
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black,
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                          iconColor: Colors.blueAccent,
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                            vertical: 10,
-                                          ),
-                                          title: Text(task.namaTask),
-                                          subtitle: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(height: 4),
-                                              RichText(
-                                                text: TextSpan(
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black,
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                      text: task.status == 1
-                                                          ? 'Closed'
-                                                          : 'Active',
-                                                      style: TextStyle(
-                                                        color: task.status == 1
-                                                            ? Colors.red
-                                                            : Colors.green,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text:
-                                                          ' • ${_formatDate(task.createdAt)}',
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const SizedBox(height: 4),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
                                                 children: [
-                                                  Row(
+                                                  TextSpan(
+                                                    text: task.status == 1
+                                                        ? 'Closed'
+                                                        : 'Active',
+                                                    style: TextStyle(
+                                                      color: task.status == 1
+                                                          ? Colors.red
+                                                          : Colors.green,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        ' • ${_formatDate(task.createdAt)}',
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Row(
                                                     children: [
                                                       const Icon(Icons.person,
                                                           size: 16,
                                                           color: Colors.grey),
                                                       const SizedBox(width: 4),
-                                                      Text(
-                                                        task.mentor.name,
-                                                        style: const TextStyle(
-                                                          fontSize: 12,
-                                                          color: Colors.grey,
+                                                      Flexible(
+                                                        child: Text(
+                                                          task.mentor.name,
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.grey,
+                                                          ),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                         ),
                                                       ),
                                                     ],
                                                   ),
-                                                  SizedBox(
-                                                    width: 90,
-                                                    height:
-                                                        27, // tambahkan tinggi
-                                                    child: Stack(
-                                                      clipBehavior: Clip.none,
-                                                      children: List.generate(
-                                                          task.taskUser
-                                                                  ?.length ??
-                                                              0, (i) {
-                                                        final user = task
-                                                            .taskUser![i].user;
-
-                                                        final pictureUrl =
-                                                            '${AppConstants.baseStorage}/${user?.picture}';
-                                                        final nameInitial = user
-                                                                ?.name
-                                                                .substring(0, 1)
-                                                                .toUpperCase() ??
-                                                            '?';
-
-                                                        return Positioned(
-                                                          left: i * 35.0,
-                                                          child: CircleAvatar(
-                                                            radius: 16,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            child: pictureUrl
-                                                                    .isNotEmpty
-                                                                ? ClipOval(
-                                                                    child: Image
-                                                                        .network(
-                                                                      pictureUrl,
-                                                                      width: 32,
-                                                                      height:
-                                                                          32,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                      errorBuilder: (context,
-                                                                          error,
-                                                                          stackTrace) {
-                                                                        // Fallback ke inisial jika error
-                                                                        return CircleAvatar(
-                                                                          radius:
-                                                                              16,
-                                                                          backgroundColor: Colors
-                                                                              .blue
-                                                                              .shade200,
-                                                                          child:
-                                                                              Text(
-                                                                            nameInitial,
-                                                                            style:
-                                                                                const TextStyle(
-                                                                              fontSize: 12,
-                                                                              color: Colors.white,
-                                                                            ),
-                                                                          ),
-                                                                        );
-                                                                      },
-                                                                    ),
-                                                                  )
-                                                                : CircleAvatar(
-                                                                    radius: 16,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .blue
-                                                                            .shade200,
-                                                                    child: Text(
-                                                                      nameInitial,
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        fontSize:
-                                                                            12,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                          ),
-                                                        );
-                                                      }),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          trailing:
-                                              const Icon(Icons.chevron_right),
-                                          onTap: () {
-                                            context
-                                                .read<TaskBloc>()
-                                                .add(LoadDetailTask(task));
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const TaskDetailPage(),
-                                              ),
-                                            );
-                                          },
-                                        ));
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        trailing:
+                                            const Icon(Icons.chevron_right),
+                                        onTap: () {
+                                          context
+                                              .read<TaskBloc>()
+                                              .add(LoadDetailTask(task));
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const TaskDetailPage(),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
                                   },
-                                ),
+                                )
                         ],
                       ),
                     ),

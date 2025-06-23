@@ -65,6 +65,23 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Mentor App',
           theme: ThemeData(
+            textTheme: const TextTheme(
+              displayLarge: TextStyle(fontSize: 24), // default: 57
+              displayMedium: TextStyle(fontSize: 15),
+              displaySmall: TextStyle(fontSize: 12),
+              headlineLarge: TextStyle(fontSize: 12),
+              headlineMedium: TextStyle(fontSize: 11),
+              headlineSmall: TextStyle(fontSize: 10),
+              titleLarge: TextStyle(fontSize: 13),
+              titleMedium: TextStyle(fontSize: 12),
+              titleSmall: TextStyle(fontSize: 12),
+              bodyLarge: TextStyle(fontSize: 11),
+              bodyMedium: TextStyle(fontSize: 10),
+              bodySmall: TextStyle(fontSize: 8),
+              labelLarge: TextStyle(fontSize: 12),
+              labelMedium: TextStyle(fontSize: 11),
+              labelSmall: TextStyle(fontSize: 10),
+            ),
             colorScheme: const ColorScheme.light(
               primary: AppColors.primary,
               surface: Colors.white,

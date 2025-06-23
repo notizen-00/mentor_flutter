@@ -151,8 +151,8 @@ class TaskDetailPage extends StatelessWidget {
                           style: TextStyle(color: Colors.white),
                         ),
                         subtitle: const Text(
-                          'mohon kalau pinjam di kembalikan !',
-                          style: TextStyle(color: Colors.white30),
+                          'list alat yang di pinjam !',
+                          style: TextStyle(color: Colors.white54),
                         ),
                         trailing: GestureDetector(
                           child: const Icon(
@@ -320,21 +320,6 @@ class TaskDetailPage extends StatelessWidget {
       child: Text(
         label,
         style: TextStyle(color: color, fontWeight: FontWeight.w600),
-      ),
-    );
-  }
-
-  Widget _attachmentTile(String name, IconData icon, Color iconColor) {
-    return Container(
-      decoration: BoxDecoration(
-        color: iconColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        leading: Icon(icon, color: iconColor),
-        title: Text(name),
-        trailing: const Icon(Icons.download),
-        onTap: () {},
       ),
     );
   }

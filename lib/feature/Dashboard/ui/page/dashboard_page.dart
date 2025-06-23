@@ -13,59 +13,67 @@ class DashboardPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white.withOpacity(0.6),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(50),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              mainAxisSpacing: 22,
-              crossAxisSpacing: 12,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                const DashboardCard(
-                  title: "Staff",
-                  value: "15",
-                  icon: Icons.person_pin_circle_outlined,
-                  color: Colors.blue,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    context.read<SiswaBloc>().add(SiswaListCheck());
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ListSiswaPage()),
-                    );
-                  },
-                  child: const DashboardCard(
-                    title: "Siswa Magang",
-                    value: "4",
-                    icon: Icons.person_pin_sharp,
-                    color: Colors.green,
+            const SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0), // kiri dan kanan
+              child: GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                mainAxisSpacing: 22,
+                crossAxisSpacing: 12,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  const DashboardCard(
+                    title: "Staff",
+                    value: "15",
+                    icon: Icons.person_pin_circle_outlined,
+                    color: Colors.blue,
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ToolPage()),
-                    );
-                  },
-                  child: const DashboardCard(
-                    title: "Tools",
-                    value: "6",
-                    icon: Icons.inventory_2_outlined,
-                    color: Colors.purple,
+                  GestureDetector(
+                    onTap: () {
+                      context.read<SiswaBloc>().add(SiswaListCheck());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ListSiswaPage()),
+                      );
+                    },
+                    child: const DashboardCard(
+                      title: "Siswa Magang",
+                      value: "4",
+                      icon: Icons.person_pin_sharp,
+                      color: Colors.green,
+                    ),
                   ),
-                ),
-                const DashboardCard(
-                  title: "Task",
-                  value: "0",
-                  icon: Icons.task_outlined,
-                  color: Colors.orange,
-                ),
-              ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ToolPage()),
+                      );
+                    },
+                    child: const DashboardCard(
+                      title: "Tools",
+                      value: "6",
+                      icon: Icons.inventory_2_outlined,
+                      color: Colors.purple,
+                    ),
+                  ),
+                  const DashboardCard(
+                    title: "Task",
+                    value: "0",
+                    icon: Icons.task_outlined,
+                    color: Colors.orange,
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 1),
 

@@ -138,14 +138,14 @@ class _RootPageState extends State<RootPage> {
                                   siswa.user.name,
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 18,
+                                    fontSize: 12,
                                   ),
                                 ),
                                 Text(
-                                  '${siswa.user.email}}',
+                                  siswa.user.email,
                                   style: const TextStyle(
                                     color: Colors.white70,
-                                    fontSize: 14,
+                                    fontSize: 9,
                                   ),
                                 ),
                               ],
@@ -169,7 +169,7 @@ class _RootPageState extends State<RootPage> {
                       return const Padding(
                         padding: EdgeInsets.only(bottom: 40.0, top: 10.0),
                         child: Text(
-                          'Nama tidak tersedia',
+                          '--',
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                       );

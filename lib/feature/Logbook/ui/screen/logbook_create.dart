@@ -209,6 +209,7 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     return Drawer(
       width: width * 0.94,
@@ -255,6 +256,8 @@ class _LogbookFormDrawerState extends State<LogbookFormDrawer> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           MultiSelectDialogField<ToolModel>(
+                            dialogHeight: height,
+                            dialogWidth: width,
                             items: _tools
                                 .map((tool) => MultiSelectItem<ToolModel>(tool,
                                     '${tool.namaAlat} ( stok : ${tool.stok} )'))
