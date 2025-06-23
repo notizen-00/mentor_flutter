@@ -25,12 +25,13 @@ class WebSocketService {
     required OnJoinCallback onJoin,
     required OnLeaveCallback onLeave,
   }) async {
-    const host = '192.168.1.11';
-    const appKey = '12345';
-    const authUrl = 'http://$host/api/broadcasting/auth';
+    const host = 'dash.intern.tik.unej.ac.id';
+    const appKey = 'wxchwyrzgjxjax9qvx5a';
+    // const appKey = '12345';
+    const authUrl = 'https://$host/api/broadcasting/auth';
 
     const wsUrl =
-        'ws://$host:8080/app/$appKey?protocol=7&client=flutter&version=1.0';
+        'wss://$host/app/$appKey?protocol=7&client=flutter&version=1.0';
 
     final siswa = await sl<SiswaManager>().getSiswa();
     final token = await sl<TokenManager>().getToken();

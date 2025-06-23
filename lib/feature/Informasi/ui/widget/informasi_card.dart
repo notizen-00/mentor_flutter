@@ -50,7 +50,7 @@ class InformasiInfoCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Status Staff',
+                        'Staff',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -61,7 +61,7 @@ class InformasiInfoCard extends StatelessWidget {
                         children: [
                           _buildBadge(
                             count: saatIni,
-                            label: 'Ready di booking',
+                            label: 'Bismillāhir-raḥmānir-raḥīm',
                             color: Colors.green,
                             icon: Icons.check_circle,
                           ),

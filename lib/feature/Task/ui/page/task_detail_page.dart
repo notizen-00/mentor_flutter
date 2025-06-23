@@ -24,6 +24,101 @@ class TaskDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void addTaskTool(BuildContext context, TaskModel task) {
+      final toolState = context.read<ToolBloc>().state;
+
+      if (toolState is! ToolLoaded) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Alat belum tersedia')),
+        );
+        return;
+      }
+
+      final tools = toolState.tools;
+      final selectedToolIds = <int>{}; // set of selected tool IDs
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: Text('Pilih alat untuk "${task.namaTask}"'),
+                content: SizedBox(
+                  width: double.maxFinite,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: tools.length,
+                    itemBuilder: (context, index) {
+                      final tool = tools[index];
+                      final isSelected = selectedToolIds.contains(tool.id);
+
+                      return CheckboxListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child:
+                                  Text('${tool.namaAlat} (${tool.qty} item)'),
+                            ),
+                            Text(
+                              tool.qty > 0 ? 'Tersedia' : 'Tidak tersedia',
+                              style: TextStyle(
+                                color: tool.qty > 0 ? Colors.green : Colors.red,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        value: isSelected,
+                        onChanged: tool.qty == 0
+                            ? null
+                            : (bool? value) {
+                                setState(() {
+                                  if (value == true) {
+                                    selectedToolIds.add(tool.id);
+                                  } else {
+                                    selectedToolIds.remove(tool.id);
+                                  }
+                                });
+                              },
+                      );
+                    },
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Batal'),
+                  ),
+                  ElevatedButton(
+                    onPressed: selectedToolIds.isEmpty
+                        ? null
+                        : () {
+                            Navigator.pop(context);
+
+                            context.read<TaskBloc>().add(AssignToolsToTask(
+                                taskId: task.id,
+                                selectedToolIds: selectedToolIds.toList()));
+                            context.read<ToolBloc>().add(LoadCurrentTool());
+                            showInfoToast(context, 'sukses menambah alat !');
+                          },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                    ),
+                    child: const Text(
+                      'Selesai',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
+    }
+
     return MultiBlocListener(
       listeners: [
         BlocListener<TaskBloc, TaskState>(
@@ -163,7 +258,37 @@ class TaskDetailPage extends StatelessWidget {
                       ),
                     const SizedBox(height: 16),
                     Column(
-                      children: [TaskTools(tools: state.task.taskTool!)],
+                      children: [
+                        TaskTools(
+                            tools: state.task.taskTool!,
+                            isJoined: state.alreadyJoined),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  WidgetStatePropertyAll(Colors.blue.shade100),
+                              surfaceTintColor:
+                                  const WidgetStatePropertyAll(Colors.red),
+                            ),
+                            onPressed: () {
+                              if (state.alreadyJoined) {
+                                context.read<ToolBloc>().add(LoadCurrentTool());
+                                addTaskTool(context, state.task);
+                              } else {
+                                showErrorToast(
+                                    context, 'Anda bukan bagian dari task ini');
+                              }
+                            },
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add),
+                                Text('Tambah Alat'),
+                              ],
+                            ))
+                      ],
                     ),
                     const SizedBox(height: 16),
                     ListTile(
@@ -187,7 +312,9 @@ class TaskDetailPage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TaskProgressList(schemas: state.task.taskSchema),
+                        TaskProgressList(
+                            schemas: state.task.taskSchema,
+                            isJoined: state.alreadyJoined),
                         const SizedBox(height: 8),
                         LinearProgressIndicator(
                           value: _calculateProgress(state.task.taskSchema),
@@ -297,7 +424,27 @@ class TaskDetailPage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const SizedBox.shrink();
+                    return Container(
+                      padding: const EdgeInsets.all(16),
+                      color: Colors.white,
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showSuccessToast(
+                                context, 'Task Berhasil di tutup !');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          child: const Text(
+                            "Close Task",
+                            style: TextStyle(color: Colors.white, fontSize: 19),
+                          ),
+                        ),
+                      ),
+                    );
                   }
                 },
               );

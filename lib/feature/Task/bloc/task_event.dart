@@ -22,6 +22,19 @@ class JoinTask extends TaskEvent {
   JoinTask({required this.taskId});
 }
 
+class CompleteProgress extends TaskEvent {
+  final int taskSchemaId;
+
+  CompleteProgress({required this.taskSchemaId});
+}
+
+class AssignToolsToTask extends TaskEvent {
+  final int taskId;
+  final List<int> selectedToolIds;
+
+  AssignToolsToTask({required this.taskId, required this.selectedToolIds});
+}
+
 class ConnectToTaskChannels extends TaskEvent {
   final int roomId;
   ConnectToTaskChannels(this.roomId);

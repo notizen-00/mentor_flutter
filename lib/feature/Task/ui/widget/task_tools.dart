@@ -6,7 +6,10 @@ import 'package:internship_app/feature/Tool/bloc/tool_bloc.dart';
 
 class TaskTools extends StatelessWidget {
   final List<TaskTool> tools;
-  const TaskTools({super.key, required this.tools});
+  final bool isJoined;
+
+  const TaskTools({super.key, required this.tools, required this.isJoined});
+
   void _handleReturn(BuildContext context, TaskTool tool) {
     showDialog(
       context: context,
@@ -21,16 +24,14 @@ class TaskTools extends StatelessWidget {
           ),
           ElevatedButton(
             style: const ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(AppColors.primary)),
+              backgroundColor: WidgetStatePropertyAll(AppColors.primary),
+            ),
             onPressed: () {
               Navigator.pop(context);
-
               context.read<ToolBloc>().add(BringBackTool(toolId: tool.toolId));
             },
-            child: const Text(
-              'Kembalikan',
-              style: TextStyle(color: Colors.white),
-            ),
+            child:
+                const Text('Kembalikan', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -39,10 +40,47 @@ class TaskTools extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borrowedTools = tools.where((tool) => tool.status == 1).toList();
+    final returnedTools = tools.where((tool) => tool.status != 1).toList();
+
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          const TabBar(
+            indicatorColor: AppColors.primary,
+            labelColor: AppColors.primary,
+            unselectedLabelColor: Colors.grey,
+            tabs: [
+              Tab(text: 'Dipinjam'),
+              Tab(text: 'Dikembalikan'),
+            ],
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 180, // adjust height based on needs
+            child: TabBarView(
+              children: [
+                _buildToolGrid(context, borrowedTools, true),
+                _buildToolGrid(context, returnedTools, false),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToolGrid(
+      BuildContext context, List<TaskTool> toolList, bool canReturn) {
+    if (toolList.isEmpty) {
+      return const Center(child: Text("Tidak ada alat."));
+    }
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: tools.length,
+      itemCount: toolList.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 12,
@@ -50,13 +88,13 @@ class TaskTools extends StatelessWidget {
         childAspectRatio: 3.5,
       ),
       itemBuilder: (context, index) {
-        final tool = tools[index];
-        final isAvailable = tool.status == 1;
+        final tool = toolList[index];
         return _ToolCard(
           name: tool.tool!.namaAlat,
-          isAvailable: isAvailable,
+          isAvailable: tool.status == 1,
           qty: tool.qty,
-          onTap: () => _handleReturn(context, tool),
+          onTap:
+              isJoined && canReturn ? () => _handleReturn(context, tool) : null,
         );
       },
     );
@@ -67,7 +105,7 @@ class _ToolCard extends StatelessWidget {
   final String name;
   final bool isAvailable;
   final int qty;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const _ToolCard({
     required this.name,

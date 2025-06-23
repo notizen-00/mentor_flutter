@@ -13,6 +13,12 @@ class TaskLoaded extends TaskState {
   TaskLoaded(this.tasks);
 }
 
+class TaskProgressComplete extends TaskState {
+  final String message;
+
+  TaskProgressComplete(this.message);
+}
+
 class TaskError extends TaskState {
   final String message;
 
@@ -21,8 +27,9 @@ class TaskError extends TaskState {
 
 class DetailTaskLoaded extends TaskState {
   final TaskModel task;
+  final bool alreadyJoined;
 
-  DetailTaskLoaded(this.task);
+  DetailTaskLoaded(this.task, this.alreadyJoined);
 }
 
 class JoinTaskSuccess extends TaskState {

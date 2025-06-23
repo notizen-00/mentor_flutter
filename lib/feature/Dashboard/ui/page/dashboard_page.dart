@@ -109,22 +109,10 @@ class DashboardPage extends StatelessWidget {
 
                   // Task Cards
                   TaskActiveCard(
-                    title: "Check Power Usage",
-                    subtitle: "Review usage for Flat 1",
+                    title: "Under Development",
+                    subtitle: "Under Developmentttttttttttttttttttttttt!",
                     icon: Icons.flash_on,
                     color: Colors.orange,
-                  ),
-                  TaskActiveCard(
-                    title: "Pay Electricity Bill",
-                    subtitle: "Flat 2 bill due this week",
-                    icon: Icons.receipt_long,
-                    color: Colors.red,
-                  ),
-                  TaskActiveCard(
-                    title: "Analyze Cost Trend",
-                    subtitle: "Compare April vs May",
-                    icon: Icons.trending_up,
-                    color: Colors.blue,
                   ),
                 ],
               ),

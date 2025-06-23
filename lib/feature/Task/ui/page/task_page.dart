@@ -6,6 +6,7 @@ import 'package:internship_app/core/const/constanst.dart';
 import 'package:internship_app/core/utils/toast_utils.dart';
 import 'package:internship_app/feature/Task/ui/page/task_detail_page.dart';
 import 'package:internship_app/feature/Task/ui/widget/task_setting.dart';
+import 'package:internship_app/feature/Tool/bloc/tool_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
 
@@ -206,6 +207,9 @@ class _TaskPageState extends State<TaskPage>
                                           context
                                               .read<TaskBloc>()
                                               .add(LoadDetailTask(task));
+                                          context
+                                              .read<ToolBloc>()
+                                              .add(LoadCurrentTool());
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (context) =>

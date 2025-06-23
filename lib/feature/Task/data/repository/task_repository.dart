@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:internship_app/core/const/constanst.dart';
 
 import 'package:internship_app/core/utils/token_manager.dart';
+import 'package:internship_app/feature/Task/bloc/task_bloc.dart';
 import 'package:internship_app/feature/Task/data/model/task_model.dart'; // pastikan import model ini
 
 class TaskRepository {
@@ -73,6 +74,51 @@ class TaskRepository {
     return null;
   }
 
+  Future<TaskModel?> assignToolsToTask(
+      int taskId, List<int>? selectedToolIds) async {
+    try {
+      final token = await _tokenManager.getToken();
+      if (token == null) throw Exception('Token tidak tersedia');
+      log('Token: $token');
+
+      final uri = Uri.parse('$baseUrl/task/assign-tools');
+      final request = http.MultipartRequest('POST', uri)
+        ..headers.addAll({
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        })
+        ..fields['task_id'] = taskId.toString();
+
+      if (selectedToolIds != null && selectedToolIds.isNotEmpty) {
+        for (var i = 0; i < selectedToolIds.length; i++) {
+          request.fields['tools[$i][tool_id]'] = selectedToolIds[i].toString();
+        }
+      }
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      log('Status Code: ${response.statusCode}');
+      log('Response Body: ${response.body}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        final isi = body['data'];
+        return TaskModel.fromJson(isi);
+      } else if (response.statusCode == 422) {
+        final error = jsonDecode(response.body);
+        log('Gagal simpan: $error', name: 'TaskRepository');
+        throw Exception(error['message'] ?? 'Gagal menyimpan data task.');
+      }
+    } catch (e, stackTrace) {
+      log('Terjadi kesalahan saat menyimpan data task: $e',
+          name: 'TaskRepository');
+      log('StackTrace: $stackTrace', name: 'TaskRepository');
+      rethrow;
+    }
+    return null;
+  }
+
   Future<List<TaskModel>> getCurrentTask() async {
     try {
       final token = await _tokenManager.getToken();
@@ -102,6 +148,41 @@ class TaskRepository {
         return taskList
             .map((taskJson) => TaskModel.fromJson(taskJson))
             .toList();
+      } else {
+        final Map<String, dynamic> body = jsonDecode(response.body);
+        final errorMessage =
+            body['message'] ?? 'Terjadi kesalahan saat memuat Task.';
+        throw Exception('Gagal memuat Task: $errorMessage');
+      }
+    } catch (e, stackTrace) {
+      log('Terjadi kesalahan saat getCurrentTask: $e', name: 'TaskRepository');
+      log('StackTrace: $stackTrace');
+      rethrow;
+    }
+  }
+
+  Future<TaskModel> completeProgress(int taskSchemaId) async {
+    try {
+      final token = await _tokenManager.getToken();
+      if (token == null) throw Exception('Token tidak tersedia');
+
+      final url = Uri.parse('$baseUrl/task/verifikasi');
+      final response = await http.post(url, headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      }, body: {
+        'task_schema_id': taskSchemaId.toString()
+      });
+
+      log('GET $url');
+      log('Status Code: ${response.statusCode}');
+      log('Response Body: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final body = jsonDecode(response.body);
+        final isi = body['data'];
+        log('Data response: ${jsonEncode(isi)}');
+        return TaskModel.fromJson(isi);
       } else {
         final Map<String, dynamic> body = jsonDecode(response.body);
         final errorMessage =

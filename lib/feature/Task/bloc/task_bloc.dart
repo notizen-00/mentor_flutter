@@ -3,8 +3,10 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:internship_app/core/services/service_locator.dart';
 import 'package:internship_app/core/services/websocket_services.dart';
 import 'package:internship_app/core/utils/notification_helper.dart';
+import 'package:internship_app/core/utils/siswa_manager.dart';
 import 'package:internship_app/feature/Task/data/model/task_model.dart';
 import 'package:internship_app/feature/Task/data/repository/task_repository.dart';
 
@@ -22,6 +24,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     on<ConnectToTaskChannels>(_onConnectToTaskChannels);
     on<LoadDetailTask>(_onLoadDetailTask);
     on<ReceivedTaskMessage>(_onReceivedTaskMessage);
+    on<CompleteProgress>(_onCompleteProgress);
+    on<AssignToolsToTask>(_onAssignToolsTask);
   }
 
   void _onReceivedTaskMessage(
@@ -46,6 +50,28 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         final List<TaskModel> tasks = await taskRepository.getCurrentTask();
         add(ConnectToTaskChannels(task.id));
         emit(TaskLoaded(tasks));
+      } else {
+        emit(TaskError('Task kosong'));
+      }
+    } catch (e) {
+      emit(TaskError(e.toString()));
+    }
+  }
+
+  Future<void> _onAssignToolsTask(
+    AssignToolsToTask event,
+    Emitter<TaskState> emit,
+  ) async {
+    emit(TaskLoading());
+    try {
+      final TaskModel? task = await taskRepository.assignToolsToTask(
+          event.taskId, event.selectedToolIds);
+
+      if (task != null) {
+        final siswa = await sl<SiswaManager>().getSiswa();
+        final alreadyJoined =
+            task.taskUser!.any((taskUser) => taskUser.userId == siswa?.id);
+        emit(DetailTaskLoaded(task, alreadyJoined));
       } else {
         emit(TaskError('Task kosong'));
       }
@@ -88,7 +114,27 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     emit(TaskLoading());
     try {
       final List<TaskModel> task = await taskRepository.getCurrentTask();
+
       emit(TaskLoaded(task));
+    } catch (e) {
+      emit(TaskError(e.toString()));
+    }
+  }
+
+  Future<void> _onCompleteProgress(
+    CompleteProgress event,
+    Emitter<TaskState> emit,
+  ) async {
+    emit(TaskLoading());
+    try {
+      final TaskModel task =
+          await taskRepository.completeProgress(event.taskSchemaId);
+      final siswa = await sl<SiswaManager>().getSiswa();
+      final alreadyJoined =
+          task.taskUser!.any((taskUser) => taskUser.userId == siswa?.id);
+
+      emit(TaskProgressComplete('sukses menyelesaikan progres ini !'));
+      emit(DetailTaskLoaded(task, alreadyJoined));
     } catch (e) {
       emit(TaskError(e.toString()));
     }
@@ -101,7 +147,11 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     emit(TaskLoading());
     try {
       final TaskModel task = event.task;
-      emit(DetailTaskLoaded(task));
+      final siswa = await sl<SiswaManager>().getSiswa();
+
+      final alreadyJoined =
+          task.taskUser!.any((taskUser) => taskUser.userId == siswa?.id);
+      emit(DetailTaskLoaded(task, alreadyJoined));
     } catch (e) {
       emit(TaskError(e.toString()));
     }

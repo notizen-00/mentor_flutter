@@ -9,11 +9,11 @@ import 'package:internship_app/core/utils/token_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 Future<void> connectToPusher() async {
-  const reverbHost = '192.168.1.11';
-  // const reverbAppKey = 'wxchwyrzgjxjax9qvx5a';
-  const reverbAppKey = '12345';
-  const wsUrl = 'ws://$reverbHost:8080/app/$reverbAppKey';
-  const broadcastAuthUrl = 'http://$reverbHost/api/broadcasting/auth';
+  const reverbHost = 'dash.intern.tik.unej.ac.id';
+  const reverbAppKey = 'wxchwyrzgjxjax9qvx5a';
+  // const reverbAppKey = '12345';
+  const wsUrl = 'wss://$reverbHost/app/$reverbAppKey';
+  const broadcastAuthUrl = 'https://$reverbHost/api/broadcasting/auth';
 
   final token = await sl<TokenManager>().getToken();
   final siswa = await sl<SiswaManager>().getSiswa();
